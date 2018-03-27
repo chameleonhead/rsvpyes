@@ -49,7 +49,7 @@ namespace rsvpyes.Controllers
         // POST: Meetings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartTime")] Meeting meeting)
+        public async Task<IActionResult> Create([FromForm] Meeting meeting)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace rsvpyes.Controllers
         // POST: Meetings/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,StartTime")] Meeting meeting)
+        public async Task<IActionResult> Edit(Guid id, [FromForm] Meeting meeting)
         {
             if (id != meeting.Id)
             {
@@ -140,7 +140,6 @@ namespace rsvpyes.Controllers
             return (await dataService.Where(e => e.Id == id)).Any();
         }
 
-        [HttpPost]
         public async Task<IActionResult> SendRsvp(Guid id)
         {
             if (id == null)
@@ -155,6 +154,24 @@ namespace rsvpyes.Controllers
             }
 
             return View(meeting);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendRsvp(Guid id, [FromForm] MailSendCommand command)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var meeting = await dataService.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
         }
     }
 }

@@ -1,0 +1,80 @@
+﻿@model rsvpyes.Data.Meeting
+
+@{
+    ViewData["Title"] = "SendRsvp";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Meeting</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PlaceName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PlaceName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PlaceUri)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PlaceUri)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Fee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Fee)
+        </dd>
+    </dl>
+</div>
+<div>
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartTime" class="control-label"></label>
+            <input asp-for="StartTime" class="form-control" />
+            <span asp-validation-for="StartTime" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PlaceName" class="control-label"></label>
+            <input asp-for="PlaceName" class="form-control" />
+            <span asp-validation-for="PlaceName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PlaceUri" class="control-label"></label>
+            <input asp-for="PlaceUri" class="form-control" />
+            <span asp-validation-for="PlaceUri" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fee" class="control-label"></label>
+            <input asp-for="Fee" class="form-control" />
+            <span asp-validation-for="Fee" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+    <div>
+        <a asp-action="Details" asp-route-id="@Model.Id">Back to Details</a>
+    </div>
+</div>

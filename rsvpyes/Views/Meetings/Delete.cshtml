@@ -23,8 +23,26 @@
         <dd>
             @Html.DisplayFor(model => model.StartTime)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PlaceName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PlaceName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PlaceUri)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PlaceUri)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Fee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Fee)
+        </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-default" /> |

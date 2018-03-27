@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using rsvpyes.Data;
 using rsvpyes.Services;
+using System.Security.Principal;
 
 namespace rsvpyes
 {
@@ -21,20 +22,20 @@ namespace rsvpyes
         {
             services.AddMvc();
 
-            var db = new RsvpContext(
-                new DbContextOptionsBuilder<RsvpContext>()
-                .UseSqlite(Configuration.GetConnectionString("RsvpDatabase"))
-                .Options);
-            db.Database.EnsureCreated();
-            services.AddSingleton(typeof(RsvpContext), db);
             services.AddSingleton<IRsvpDataService, RsvpDataService>();
             services.AddTransient<IDataService<User>, DataService<User>>();
             services.AddTransient<IDataService<Meeting>, DataService<Meeting>>();
             services.AddTransient<IDataService<RsvpRequest>, DataService<RsvpRequest>>();
             services.AddTransient<IDataService<RsvpResponse>, DataService<RsvpResponse>>();
 
-            services.AddDbContext<RsvpContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("rsvpyesContext")));
+            // メールサービス
+            var smtpHost = Configuration["Mail:SmtpHost"];
+            var smtpPort = Configuration.GetValue("Mail:SmtpPort", 25);
+            var smtpUser = Configuration["Mail:SmtpUser"];
+            var smtpPassword = Configuration["Mail:SmtpPassword"];
+            var senderSignature = Configuration["Mail:SenderSignature"];
+            services.AddSingleton<IMailConfiguration>(new MailConfiguration(smtpHost, smtpPort, smtpUser, smtpPassword, senderSignature, "http://" + WindowsIdentity.GetCurrent().Name + "/response/respond"));
+            services.AddTransient<IMailService, MailService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

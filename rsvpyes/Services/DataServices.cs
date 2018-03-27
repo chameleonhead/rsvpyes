@@ -1,4 +1,6 @@
-﻿using rsvpyes.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using rsvpyes.Data;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -30,17 +32,29 @@ namespace rsvpyes.Services
     sealed class RsvpDataService : IRsvpDataService
     {
         private BlockingCollection<Action<RsvpContext>> taskQueue;
+        private IConfiguration configuration;
 
-        public RsvpDataService(RsvpContext context)
+        public RsvpDataService(IConfiguration configuration)
         {
+            var option = new DbContextOptionsBuilder<RsvpContext>()
+                        .UseSqlite(configuration.GetConnectionString("RsvpDatabase"))
+                        .Options;
+
+            using (var db = new RsvpContext(option))
+            {
+                db.Database.EnsureCreated();
+            }
+
             taskQueue = new BlockingCollection<Action<RsvpContext>>();
             Task.Run(() =>
             {
-                var db = context;
                 while (true)
                 {
-                    var action = taskQueue.Take();
-                    action(db);
+                    using (var db = new RsvpContext(option))
+                    {
+                        var action = taskQueue.Take();
+                        action(db);
+                    }
                 }
             });
         }
@@ -86,7 +100,16 @@ namespace rsvpyes.Services
         {
             return DbWork(db =>
             {
-                db.Set<T>().Update(obj);
+                try
+                {
+                    db.Set<T>().Update(obj);
+                }
+                catch (InvalidOperationException)
+                {
+                    db.Entry(obj).CurrentValues.SetValues(obj);
+                    db.Set<T>().Update(obj);
+                }
+
                 db.SaveChanges();
                 return obj;
             });
@@ -97,7 +120,7 @@ namespace rsvpyes.Services
             return DbWork<IEnumerable<T>>(db =>
             {
                 var e = db.Set<T>().Where(predicate);
-                return e;
+                return e.ToList();
             });
         }
 

@@ -50,7 +50,7 @@ namespace rsvpyes.Controllers
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] User user)
+        public async Task<IActionResult> Create([FromForm] User user)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace rsvpyes.Controllers
         // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] User user)
+        public async Task<IActionResult> Edit(Guid id, [FromForm] User user)
         {
             if (id != user.Id)
             {

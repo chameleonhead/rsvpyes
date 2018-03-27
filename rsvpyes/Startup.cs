@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using rsvpyes.Data;
 using rsvpyes.Services;
+using System.Security.Principal;
 
 namespace rsvpyes
 {
@@ -21,20 +22,16 @@ namespace rsvpyes
         {
             services.AddMvc();
 
-            var db = new RsvpContext(
-                new DbContextOptionsBuilder<RsvpContext>()
-                .UseSqlite(Configuration.GetConnectionString("RsvpDatabase"))
-                .Options);
-            db.Database.EnsureCreated();
-            services.AddSingleton(typeof(RsvpContext), db);
             services.AddSingleton<IRsvpDataService, RsvpDataService>();
             services.AddTransient<IDataService<User>, DataService<User>>();
             services.AddTransient<IDataService<Meeting>, DataService<Meeting>>();
             services.AddTransient<IDataService<RsvpRequest>, DataService<RsvpRequest>>();
             services.AddTransient<IDataService<RsvpResponse>, DataService<RsvpResponse>>();
 
-            services.AddDbContext<RsvpContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("rsvpyesContext")));
+            // メールサービス
+            services.AddSingleton<IMailConfiguration>(new MailConfiguration("smtp7.gmoserver.jp", 25, "y-nagano@i-t-p.co.jp", "Itp201301", @"=======================================
+永野有音 <y-nagano@i-t-p.co.jp>", "http://" + WindowsIdentity.GetCurrent().Name + "/response/respond"));
+            services.AddTransient<IMailService, MailService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

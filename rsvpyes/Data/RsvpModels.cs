@@ -14,6 +14,9 @@ namespace rsvpyes.Data
         public Guid Id { get; set; }
         public string Name { get; set; }
         public DateTime StartTime { get; set; }
+        public string PlaceName { get; set; }
+        public string PlaceUri { get; set; }
+        public decimal Fee { get; set; }
     }
 
     public class RsvpRequest

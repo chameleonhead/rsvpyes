@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using rsvpyes.Data;
+using rsvpyes.Services;
 
 namespace rsvpyes
 {
@@ -18,13 +17,26 @@ namespace rsvpyes
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            var db = new RsvpContext(
+                new DbContextOptionsBuilder<RsvpContext>()
+                .UseSqlite(Configuration.GetConnectionString("RsvpDatabase"))
+                .Options);
+            db.Database.EnsureCreated();
+            services.AddSingleton(typeof(RsvpContext), db);
+            services.AddSingleton<IRsvpDataService, RsvpDataService>();
+            services.AddTransient<IDataService<User>, DataService<User>>();
+            services.AddTransient<IDataService<Meeting>, DataService<Meeting>>();
+            services.AddTransient<IDataService<RsvpRequest>, DataService<RsvpRequest>>();
+            services.AddTransient<IDataService<RsvpResponse>, DataService<RsvpResponse>>();
+
+            services.AddDbContext<RsvpContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("rsvpyesContext")));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

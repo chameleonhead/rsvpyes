@@ -18,7 +18,6 @@ namespace rsvpyes.Services
         string Username { get; }
         string Password { get; }
         string Signature { get; }
-        string ResponseUri { get; }
     }
 
     public class MailConfiguration : IMailConfiguration
@@ -28,15 +27,13 @@ namespace rsvpyes.Services
             int port,
             string username,
             string password,
-            string signature,
-            string responseUri)
+            string signature)
         {
             Host = host;
             Port = port;
             Username = username;
             Password = password;
             Signature = signature;
-            ResponseUri = responseUri;
         }
 
         public string Host { get; }
@@ -44,7 +41,6 @@ namespace rsvpyes.Services
         public string Username { get; }
         public string Password { get; }
         public string Signature { get; }
-        public string ResponseUri { get; }
     }
 
     public sealed class MailSendCommand
@@ -54,6 +50,7 @@ namespace rsvpyes.Services
         public Guid[] RecipiantUserIds { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
+        public string ResponseUri { get; set; }
     }
 
     public class MailService : IMailService
@@ -89,20 +86,20 @@ namespace rsvpyes.Services
                     var to = await usersService.Find(userId);
                     var mailMessage = new MailMessage(sender.Email, to.Email);
                     mailMessage.Subject = command.Title;
-                    mailMessage.Body = CreateMessage(to.Name, command.Message, rsvpRequest.Id);
+                    mailMessage.Body = CreateMessage(to.Name, command.Message, command.ResponseUri, rsvpRequest.Id);
                     client.Send(mailMessage);
                 }
             }
         }
 
-        private string CreateMessage(string recipientName, string message, Guid responseId)
+        private string CreateMessage(string recipientName, string message, string responseUri, Guid responseId)
         {
             return $@"{recipientName}様
 
 {message}
 
 返信は以下のURLよりお願いいたします。
-{configuration.ResponseUri}?id={responseId}
+{responseUri}?id={responseId}
 
 以上
 

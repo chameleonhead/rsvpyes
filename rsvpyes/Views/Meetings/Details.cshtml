@@ -53,12 +53,21 @@
         <tr>
             <th>名前</th>
             <th>出席</th>
+            <th></th>
         </tr>
         @foreach (var status in Model.ResponseStatus)
         {
         <tr>
             <td>@status.User.Name</td>
             <td>@status.RsvpResponse</td>
+            <td>
+                <a asp-action="Respond" asp-controller="Response" asp-route-id="@status.RequestId" class="btn btn-link">返信</a> | 
+                <form asp-action="DeleteInvitation" style="display: inline">
+                    <input type="hidden" name="Id" value="@Model.Meeting.Id" />
+                    <input type="hidden" name="RequestId" value="@status.RequestId" />
+                    <button type="submit" class="btn btn-link">削除</button>
+                </form>
+            </td>
         </tr>
         }
     </table>

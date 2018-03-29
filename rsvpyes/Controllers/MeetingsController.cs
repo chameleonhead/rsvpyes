@@ -58,6 +58,7 @@ namespace rsvpyes.Controllers
                 return new MeetingInvitationResponseStatus()
                 {
                     User = await usersService.Find(req.UserId),
+                    RequestId = req.Id,
                     RsvpResponse = (response?.Rsvp) ?? Rsvp.NotRespond
                 };
             }));
@@ -221,7 +222,40 @@ namespace rsvpyes.Controllers
                 return NotFound();
             }
 
+            command.ResponseUri = Request.Scheme + "://" + Request.Host.Value + Url.Action("respond", "response");
             await mailService.Send(command);
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteInvitation(Guid id, [FromForm] Guid requestId)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var meeting = await meetingsService.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+
+            var request = await rsvpRequestsService.Find(requestId);
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            if (request.MeetingId != id)
+            {
+                return BadRequest();
+            }
+
+            await Task.WhenAll((await rsvpResponsesService.Where(r => r.RsvpRequestId == requestId))
+                .Select(async r => await rsvpResponsesService.Remove(r)));
+            await rsvpRequestsService.Remove(request);
             return RedirectToAction(nameof(Details), new { id });
         }
     }

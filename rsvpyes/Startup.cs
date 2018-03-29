@@ -33,7 +33,7 @@ namespace rsvpyes
             var smtpUser = Configuration["Mail:SmtpUser"];
             var smtpPassword = Configuration["Mail:SmtpPassword"];
             var senderSignature = Configuration["Mail:SenderSignature"];
-            services.AddSingleton<IMailConfiguration>(new MailConfiguration(smtpHost, smtpPort, smtpUser, smtpPassword, senderSignature, "http://" + WindowsIdentity.GetCurrent().Name + "/response/respond"));
+            services.AddSingleton<IMailConfiguration>(new MailConfiguration(smtpHost, smtpPort, smtpUser, smtpPassword, senderSignature));
             services.AddTransient<IMailService, MailService>();
         }
 

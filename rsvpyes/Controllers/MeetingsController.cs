@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using rsvpyes.Data;
+using rsvpyes.Models.Meetings;
 using rsvpyes.Services;
 using System;
 using System.Linq;
@@ -10,17 +11,30 @@ namespace rsvpyes.Controllers
 {
     public class MeetingsController : Controller
     {
-        private readonly IDataService<Meeting> dataService;
+        private readonly IDataService<Meeting> meetingsService;
+        private readonly IDataService<User> usersService;
+        private readonly IDataService<RsvpRequest> rsvpRequestsService;
+        private readonly IDataService<RsvpResponse> rsvpResponsesService;
+        private readonly IMailService mailService;
 
-        public MeetingsController(IDataService<Meeting> dataService)
+        public MeetingsController(
+            IDataService<Meeting> meetingsService,
+            IDataService<User> usersService,
+            IDataService<RsvpRequest> rsvpRequestsService,
+            IDataService<RsvpResponse> rsvpResponsesService,
+            IMailService mailService)
         {
-            this.dataService = dataService;
+            this.meetingsService = meetingsService;
+            this.usersService = usersService;
+            this.rsvpRequestsService = rsvpRequestsService;
+            this.rsvpResponsesService = rsvpResponsesService;
+            this.mailService = mailService;
         }
 
         // GET: Meetings
         public async Task<IActionResult> Index()
         {
-            return View(await dataService.Where(u => true));
+            return View(await meetingsService.Where(u => true));
         }
 
         // GET: Meetings/Details/5
@@ -31,13 +45,28 @@ namespace rsvpyes.Controllers
                 return NotFound();
             }
 
-            var meeting = await dataService.Find(id);
+            var meeting = await meetingsService.Find(id);
             if (meeting == null)
             {
                 return NotFound();
             }
 
-            return View(meeting);
+            var requests = await rsvpRequestsService.Where(r => r.MeetingId == id);
+            var status = await Task.WhenAll(requests.Select(async req =>
+            {
+                var response = (await rsvpResponsesService.Where(res => res.RsvpRequestId == req.Id)).OrderByDescending(res => res.Timestamp).FirstOrDefault();
+                return new MeetingInvitationResponseStatus()
+                {
+                    User = await usersService.Find(req.UserId),
+                    RsvpResponse = (response?.Rsvp) ?? Rsvp.NotRespond
+                };
+            }));
+
+            return View(new MeetingDetailsViewModel()
+            {
+                Meeting = meeting,
+                ResponseStatus = status
+            });
         }
 
         // GET: Meetings/Create
@@ -54,7 +83,7 @@ namespace rsvpyes.Controllers
             if (ModelState.IsValid)
             {
                 meeting.Id = Guid.NewGuid();
-                await dataService.Insert(meeting);
+                await meetingsService.Insert(meeting);
                 return RedirectToAction(nameof(Index));
             }
             return View(meeting);
@@ -68,7 +97,7 @@ namespace rsvpyes.Controllers
                 return NotFound();
             }
 
-            var meeting = await dataService.Find(id);
+            var meeting = await meetingsService.Find(id);
             if (meeting == null)
             {
                 return NotFound();
@@ -90,7 +119,7 @@ namespace rsvpyes.Controllers
             {
                 try
                 {
-                    await dataService.Update(meeting);
+                    await meetingsService.Update(meeting);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,7 +145,7 @@ namespace rsvpyes.Controllers
                 return NotFound();
             }
 
-            var meeting = await dataService.Find(id);
+            var meeting = await meetingsService.Find(id);
             if (meeting == null)
             {
                 return NotFound();
@@ -130,14 +159,14 @@ namespace rsvpyes.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var meeting = await dataService.Find(id);
-            await dataService.Remove(meeting);
+            var meeting = await meetingsService.Find(id);
+            await meetingsService.Remove(meeting);
             return RedirectToAction(nameof(Index));
         }
 
         private async Task<bool> MeetingExists(Guid id)
         {
-            return (await dataService.Where(e => e.Id == id)).Any();
+            return (await meetingsService.Where(e => e.Id == id)).Any();
         }
 
         public async Task<IActionResult> SendRsvp(Guid id)
@@ -147,13 +176,17 @@ namespace rsvpyes.Controllers
                 return NotFound();
             }
 
-            var meeting = await dataService.Find(id);
+            var meeting = await meetingsService.Find(id);
             if (meeting == null)
             {
                 return NotFound();
             }
 
-            return View(meeting);
+            return View(new SendRsvpViewModel()
+            {
+                Meeting = meeting,
+                Users = (await usersService.Where(u => true)).OrderBy(u => u.Name).ToList()
+            });
         }
 
         [HttpPost]
@@ -165,12 +198,13 @@ namespace rsvpyes.Controllers
                 return NotFound();
             }
 
-            var meeting = await dataService.Find(id);
+            var meeting = await meetingsService.Find(id);
             if (meeting == null)
             {
                 return NotFound();
             }
 
+            await mailService.Send(command);
             return RedirectToAction(nameof(Details), new { id });
         }
     }

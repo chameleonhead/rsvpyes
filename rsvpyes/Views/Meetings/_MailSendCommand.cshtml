@@ -1,0 +1,44 @@
+﻿@model rsvpyes.Services.MailSendCommand
+
+@{
+    var users = (ViewData["users"] as IEnumerable<rsvpyes.Data.User>)
+        .Select(u => new SelectListItem()
+        {
+            Value = u.Id.ToString(),
+            Text = u.Name
+        });
+}
+
+<h4>MailSendCommand</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SendRsvp">
+            <input type="hidden" asp-for="MeetingId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SenderId" class="control-label"></label>
+                <select asp-for="SenderId" asp-items="users"></select>
+                <span asp-validation-for="SenderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipiantUserIds" class="control-label"></label>
+                <select asp-for="RecipiantUserIds" asp-items="users" multiple></select>
+                <span asp-validation-for="RecipiantUserIds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <textarea asp-for="Message" class="form-control"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="送信" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

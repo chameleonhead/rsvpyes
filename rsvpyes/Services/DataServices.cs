@@ -32,7 +32,6 @@ namespace rsvpyes.Services
     sealed class RsvpDataService : IRsvpDataService
     {
         private BlockingCollection<Action<RsvpContext>> taskQueue;
-        private IConfiguration configuration;
 
         public RsvpDataService(IConfiguration configuration)
         {

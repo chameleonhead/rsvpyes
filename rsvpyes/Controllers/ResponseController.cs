@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using rsvpyes.Data;
 using rsvpyes.Models;
+using rsvpyes.Models.Response;
 using rsvpyes.Services;
 using System;
 using System.Linq;

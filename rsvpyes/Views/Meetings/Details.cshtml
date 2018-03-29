@@ -1,4 +1,4 @@
-﻿@model rsvpyes.Data.Meeting
+﻿@model rsvpyes.Models.Meetings.MeetingDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -11,39 +11,55 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Meeting.Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Meeting.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.StartTime)
+            @Html.DisplayNameFor(model => model.Meeting.StartTime)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.StartTime)
+            @Html.DisplayFor(model => model.Meeting.StartTime)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PlaceName)
+            @Html.DisplayNameFor(model => model.Meeting.PlaceName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PlaceName)
+            @Html.DisplayFor(model => model.Meeting.PlaceName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PlaceUri)
+            @Html.DisplayNameFor(model => model.Meeting.PlaceUri)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PlaceUri)
+            @Html.DisplayFor(model => model.Meeting.PlaceUri)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Fee)
+            @Html.DisplayNameFor(model => model.Meeting.Fee)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Fee)
+            @Html.DisplayFor(model => model.Meeting.Fee)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="SendRsvp" asp-route-id="@Model.Id">SendRsvp</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Meeting.Id">Edit</a> |
+    <a asp-action="SendRsvp" asp-route-id="@Model.Meeting.Id">SendRsvp</a> |
     <a asp-action="Index">Back to List</a>
+</div>
+<div>
+    <h2>参加者一覧</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>名前</th>
+            <th>出席</th>
+        </tr>
+        @foreach (var status in Model.ResponseStatus)
+        {
+        <tr>
+            <td>@status.User.Name</td>
+            <td>@status.RsvpResponse</td>
+        </tr>
+        }
+    </table>
 </div>

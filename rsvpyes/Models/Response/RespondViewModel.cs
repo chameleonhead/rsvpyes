@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace rsvpyes.Models
+namespace rsvpyes.Models.Response
 {
     public sealed class RespondViewModel
     {

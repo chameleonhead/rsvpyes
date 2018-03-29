@@ -66,7 +66,7 @@ namespace rsvpyes.Controllers
                 Rsvp = Rsvp.Yes,
                 Timestamp = DateTime.Now,
             });
-            return Redirect("/");
+            return RedirectToAction(nameof(ThankYou));
         }
 
         [HttpPost]
@@ -79,7 +79,12 @@ namespace rsvpyes.Controllers
                 Reason = reason,
                 Timestamp = DateTime.Now,
             });
-            return Redirect("/");
+            return RedirectToAction(nameof(ThankYou));
+        }
+
+        public IActionResult ThankYou()
+        {
+            return View();
         }
     }
 }

@@ -185,7 +185,24 @@ namespace rsvpyes.Controllers
             return View(new SendRsvpViewModel()
             {
                 Meeting = meeting,
-                Users = (await usersService.Where(u => true)).OrderBy(u => u.Name).ToList()
+                Users = (await usersService.Where(u => true)).OrderBy(u => u.Name).ToList(),
+                DefaultTitle = $"{meeting.Name}への誘い",
+                DefaultMessage = $@"お疲れ様です。
+下記の通り{meeting.Name}を開催したいと存じます。
+お忙しいところ恐縮ですが、出欠のご連絡をいただきたいと存じます。
+よろしくお願いいたします。
+
+        記
+
+日時
+{meeting.StartTime.ToString("M/d (ddd) HH:mm")} ～
+ 
+場所
+{meeting.PlaceName}{(string.IsNullOrEmpty(meeting.PlaceUri) ? "" : Environment.NewLine + meeting.PlaceUri)}
+ 
+会費
+{meeting.Fee.ToString("#,#0")} 円
+"
             });
         }
 

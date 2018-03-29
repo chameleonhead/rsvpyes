@@ -44,6 +44,6 @@
 </div>
 <div>
     @Html.Partial("_MailSendCommand",
-        new rsvpyes.Services.MailSendCommand() { MeetingId = Model.Meeting.Id },
+        new rsvpyes.Services.MailSendCommand() { MeetingId = Model.Meeting.Id, Title = Model.DefaultTitle, Message = Model.DefaultMessage },
         new ViewDataDictionary(this.ViewData) { { "users", Model.Users } })
 </div>

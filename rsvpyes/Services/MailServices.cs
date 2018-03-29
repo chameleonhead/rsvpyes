@@ -52,32 +52,28 @@ namespace rsvpyes.Services
         public Guid MeetingId { get; set; }
         public Guid SenderId { get; set; }
         public Guid[] RecipiantUserIds { get; set; }
+        public string Title { get; set; }
         public string Message { get; set; }
     }
 
     public class MailService : IMailService
     {
         private IDataService<User> usersService;
-        private IDataService<Meeting> meetingsService;
         private IDataService<RsvpRequest> rsvpRequestsService;
         private IMailConfiguration configuration;
 
         public MailService(
             IDataService<User> usersService,
-            IDataService<Meeting> meetingsService,
             IDataService<RsvpRequest> rsvpRequestsService,
             IMailConfiguration configuration)
         {
             this.usersService = usersService;
-            this.meetingsService = meetingsService;
             this.rsvpRequestsService = rsvpRequestsService;
             this.configuration = configuration;
         }
         public async Task Send(MailSendCommand command)
         {
-            var meeting = await meetingsService.Find(command.MeetingId);
             var sender = await usersService.Find(command.SenderId);
-            string message = CreateInvitationMessage(command, meeting);
 
             using (var client = new SmtpClient(configuration.Host, configuration.Port))
             {
@@ -92,29 +88,11 @@ namespace rsvpyes.Services
 
                     var to = await usersService.Find(userId);
                     var mailMessage = new MailMessage(sender.Email, to.Email);
-                    mailMessage.Subject = $"{meeting.Name}への誘い";
-                    mailMessage.Body = CreateMessage(to.Name, message, rsvpRequest.Id);
+                    mailMessage.Subject = command.Title;
+                    mailMessage.Body = CreateMessage(to.Name, command.Message, rsvpRequest.Id);
                     client.Send(mailMessage);
                 }
             }
-        }
-
-        private static string CreateInvitationMessage(MailSendCommand command, Meeting meeting)
-        {
-            return $@"{command.Message}
-
-        記
-
-日時
-{meeting.StartTime.ToString("M/d (ddd) HH:mm")} ～
- 
-場所
-{meeting.PlaceName}{(string.IsNullOrEmpty(meeting.PlaceUri) ? "" : Environment.NewLine + meeting.PlaceUri)}
- 
-会費
-{meeting.Fee.ToString("#,#0")} 円
-
-";
         }
 
         private string CreateMessage(string recipientName, string message, Guid responseId)

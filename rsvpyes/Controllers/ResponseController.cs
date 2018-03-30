@@ -47,7 +47,7 @@ namespace rsvpyes.Controllers
                 return NotFound();
             }
 
-            var requests = await rsvpRequestsService.Where(r => r.MeetingId == id);
+            var requests = await rsvpRequestsService.Where(r => r.MeetingId == meeting.Id);
             var status = await Task.WhenAll(requests.Select(async req =>
             {
                 var response = (await rsvpResponsesService.Where(res => res.RsvpRequestId == req.Id)).OrderByDescending(res => res.Timestamp).FirstOrDefault();
@@ -66,7 +66,10 @@ namespace rsvpyes.Controllers
             {
                 Id = id,
                 Meeting = meeting,
-                Responses = status,
+                Responses = status
+                    .OrderBy(o => o.RsvpResponse.Rsvp == Rsvp.Yes ? 0 : o.RsvpResponse.Rsvp == Rsvp.No ? 1 : 2)
+                    .ThenBy(o => o.User.Name)
+                    .ToList(),
             });
         }
 

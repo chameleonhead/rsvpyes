@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using rsvpyes.Data;
 using rsvpyes.Services;
+using System;
 using System.Security.Principal;
 
 namespace rsvpyes
@@ -32,7 +33,7 @@ namespace rsvpyes
             var smtpPort = Configuration.GetValue("Mail:SmtpPort", 25);
             var smtpUser = Configuration["Mail:SmtpUser"];
             var smtpPassword = Configuration["Mail:SmtpPassword"];
-            var senderSignature = Configuration["Mail:SenderSignature"];
+            var senderSignature = Configuration["Mail:SenderSignature"]?.Replace("\\n", Environment.NewLine);
             services.AddSingleton<IMailConfiguration>(new MailConfiguration(smtpHost, smtpPort, smtpUser, smtpPassword, senderSignature));
             services.AddTransient<IMailService, MailService>();
         }

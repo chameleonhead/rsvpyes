@@ -4,7 +4,22 @@
     ViewData["Title"] = "返信";
 }
 
-<h2>@Model.UserName さん、飲み会に参加しますか？</h2>
+<h2>@Model.User.Name さん、参加しますか？</h2>
+<p>&nbsp;</p>
+<h5><b>@Model.Meeting.Name の詳細</b></h5>
+<dl>
+    <dt>開始時間:</dt>
+    <dd>@Model.Meeting.StartTime.ToString("M/d HH:mm")</dd>
+    <dt>場所:</dt>
+    @if (string.IsNullOrEmpty(Model.Meeting.PlaceUri))
+    {
+        <dd>@Model.Meeting.PlaceName</dd>
+    }
+    else
+    {
+        <dd><a href="@Model.Meeting.PlaceUri" target="_blank">@Model.Meeting.PlaceName</a></dd>
+    }
+</dl>
 
 <div id="yes">
     <form asp-action="RespondYes" asp-route-id="@Model.Id">
@@ -28,6 +43,7 @@
         <div><a href="#" id="respond-to-yes-link">参加する場合はこちら</a></div>
     </form>
 </div>
+
 <script>
     (function () {
         'use strict';

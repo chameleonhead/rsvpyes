@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using rsvpyes.Data;
-using rsvpyes.Models;
 using rsvpyes.Models.Response;
 using rsvpyes.Services;
 using System;
@@ -51,9 +50,8 @@ namespace rsvpyes.Controllers
             return View(new RespondViewModel()
             {
                 Id = id,
-                MeetingName = meeting.Name,
-                StartTime = meeting.StartTime,
-                UserName = user.Name
+                Meeting = meeting,
+                User = user,
             });
         }
 

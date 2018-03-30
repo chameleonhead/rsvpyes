@@ -10,10 +10,10 @@ namespace rsvpyes.Controllers
 {
     public class ResponseController : Controller
     {
-        IDataService<User> userService;
-        IDataService<Meeting> meetingService;
-        IDataService<RsvpRequest> rsvpRequestService;
-        IDataService<RsvpResponse> rsvpResponseService;
+        IDataService<User> usersService;
+        IDataService<Meeting> meetingsService;
+        IDataService<RsvpRequest> rsvpRequestsService;
+        IDataService<RsvpResponse> rsvpResponsesService;
 
         public ResponseController(
             IDataService<User> userService,
@@ -21,27 +21,70 @@ namespace rsvpyes.Controllers
             IDataService<RsvpRequest> rsvpRequestService,
             IDataService<RsvpResponse> rsvpResponseService)
         {
-            this.userService = userService;
-            this.meetingService = meetingService;
-            this.rsvpRequestService = rsvpRequestService;
-            this.rsvpResponseService = rsvpResponseService;
+            this.usersService = userService;
+            this.meetingsService = meetingService;
+            this.rsvpRequestsService = rsvpRequestService;
+            this.rsvpResponsesService = rsvpResponseService;
         }
 
-        public async Task<IActionResult> Respond(Guid id)
+        public async Task<IActionResult> ResponsesForOthers(Guid id)
         {
-            var rsvpRequest = (await rsvpRequestService.Where(u => u.Id == id)).FirstOrDefault();
+            var rsvpRequest = (await rsvpRequestsService.Where(u => u.Id == id)).FirstOrDefault();
             if (rsvpRequest == null)
             {
                 return NotFound();
             }
 
-            var meeting = (await meetingService.Where(u => u.Id == rsvpRequest.MeetingId)).FirstOrDefault();
+            var meeting = (await meetingsService.Where(u => u.Id == rsvpRequest.MeetingId)).FirstOrDefault();
             if (meeting == null)
             {
                 return NotFound();
             }
 
-            var user = (await userService.Where(u => u.Id == rsvpRequest.UserId)).FirstOrDefault();
+            var user = (await usersService.Where(u => u.Id == rsvpRequest.UserId)).FirstOrDefault();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var requests = await rsvpRequestsService.Where(r => r.MeetingId == id);
+            var status = await Task.WhenAll(requests.Select(async req =>
+            {
+                var response = (await rsvpResponsesService.Where(res => res.RsvpRequestId == req.Id)).OrderByDescending(res => res.Timestamp).FirstOrDefault();
+                return new ResponseStatusForOthers()
+                {
+                    User = await usersService.Find(req.UserId),
+                    RequestId = req.Id,
+                    RsvpResponse = new Response()
+                    {
+                        Rsvp = (response?.Rsvp) ?? Rsvp.NotRespond,
+                    },
+                };
+            }));
+
+            return View(new ResponseForOthersViewModel()
+            {
+                Id = id,
+                Meeting = meeting,
+                Responses = status,
+            });
+        }
+
+        public async Task<IActionResult> Respond(Guid id)
+        {
+            var rsvpRequest = (await rsvpRequestsService.Where(u => u.Id == id)).FirstOrDefault();
+            if (rsvpRequest == null)
+            {
+                return NotFound();
+            }
+
+            var meeting = (await meetingsService.Where(u => u.Id == rsvpRequest.MeetingId)).FirstOrDefault();
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+
+            var user = (await usersService.Where(u => u.Id == rsvpRequest.UserId)).FirstOrDefault();
             if (user == null)
             {
                 return NotFound();
@@ -58,7 +101,7 @@ namespace rsvpyes.Controllers
         [HttpPost]
         public async Task<IActionResult> RespondYes(Guid id)
         {
-            await rsvpResponseService.Insert(new RsvpResponse()
+            await rsvpResponsesService.Insert(new RsvpResponse()
             {
                 RsvpRequestId = id,
                 Rsvp = Rsvp.Yes,
@@ -70,7 +113,7 @@ namespace rsvpyes.Controllers
         [HttpPost]
         public async Task<IActionResult> RespondNo(Guid id, [FromForm] string reason)
         {
-            await rsvpResponseService.Insert(new RsvpResponse()
+            await rsvpResponsesService.Insert(new RsvpResponse()
             {
                 RsvpRequestId = id,
                 Rsvp = Rsvp.No,

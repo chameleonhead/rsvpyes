@@ -165,6 +165,16 @@ namespace rsvpyes.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var meeting = await meetingsService.Find(id);
+            var requests = await rsvpRequestsService.Where(r => r.MeetingId == id);
+            foreach (var request in requests)
+            {
+                var responses = await rsvpResponsesService.Where(res => res.RsvpRequestId == request.Id);
+                foreach (var response in responses)
+                {
+                    await rsvpResponsesService.Remove(response);
+                }
+                await rsvpRequestsService.Remove(request);
+            }
             await meetingsService.Remove(meeting);
             return RedirectToAction(nameof(Index));
         }

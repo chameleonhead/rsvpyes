@@ -59,7 +59,7 @@
         {
         <tr>
             <td>@status.User.Name</td>
-            <td>@status.RsvpResponse</td>
+            <td>@status.RsvpResponse.ToString()</td>
             <td>
                 <a asp-action="Respond" asp-controller="Response" asp-route-id="@status.RequestId" class="btn btn-link">返信</a> | 
                 <form asp-action="DeleteInvitation" style="display: inline">

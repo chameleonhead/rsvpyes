@@ -1,9 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace rsvpyes.Data
 {
     public class RsvpContext : DbContext
     {
+        public RsvpContext() : base(new DbContextOptionsBuilder<RsvpContext>()
+            .UseSqlite("Data Souce=App_Data\\rsvp.db")
+            .Options)
+        {
+        }
+
         public RsvpContext(DbContextOptions<RsvpContext> options) : base(options)
         {
         }

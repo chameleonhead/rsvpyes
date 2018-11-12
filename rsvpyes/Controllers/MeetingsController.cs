@@ -246,6 +246,53 @@ namespace rsvpyes.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        public async Task<IActionResult> AddRsvp(Guid id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var meeting = await meetingsService.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+
+            return View(new AddRsvpViewModel()
+            {
+                Meeting = meeting,
+                Users = (await usersService.Where(u => true)).OrderBy(u => u.Name).ToList(),
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRsvp(Guid id, [FromForm] Guid[] recipiantUserIds)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var meeting = await meetingsService.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var recipiantUserId in recipiantUserIds)
+            {
+                await rsvpRequestsService.Insert(new RsvpRequest()
+                {
+                    UserId = recipiantUserId,
+                    MeetingId = id
+                });
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteInvitation(Guid id, [FromForm] Guid requestId)

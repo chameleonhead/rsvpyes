@@ -1,0 +1,66 @@
+﻿@model rsvpyes.Models.Meetings.AddRsvpViewModel
+
+@{
+    ViewData["Title"] = "AddRsvp";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Meeting</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Meeting.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Meeting.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Meeting.StartTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Meeting.StartTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Meeting.PlaceName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Meeting.PlaceName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Meeting.PlaceUri)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Meeting.PlaceUri)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Meeting.Fee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Meeting.Fee)
+        </dd>
+    </dl>
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddRsvp">
+                <input type="hidden" asp-for="Meeting.Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Users" class="control-label"></label>
+                    <select name="RecipiantUserIds" asp-items="Model.Users.Select(e=>new SelectListItem() { Text = e.Name, Value = e.Id.ToString() })" class="form-control" multiple></select>
+                    <span asp-validation-for="Users" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="送信" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

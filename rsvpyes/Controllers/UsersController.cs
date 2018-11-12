@@ -20,7 +20,9 @@ namespace rsvpyes.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await dataService.Where(u => true));
+            return View((await dataService.Where(u => true))
+                .OrderBy(e => e.Organization)
+                .ThenBy(e => e.Name));
         }
 
         // GET: Users/Details/5

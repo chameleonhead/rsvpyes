@@ -29,7 +29,7 @@
         @foreach (var status in Model.Responses)
         {
             <tr>
-                <td>@status.User.Name</td>
+                <td>@(status.User.Name + (string.IsNullOrEmpty(status.User.Organization) ? "" : $" ({status.User.Organization})"))</td>
                 <td>@status.RsvpResponse.ToString()</td>
             </tr>
         }

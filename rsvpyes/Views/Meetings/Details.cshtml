@@ -59,7 +59,7 @@
         @foreach (var status in Model.ResponseStatus)
         {
             <tr>
-                <td>@status.User.Name</td>
+                <td>@(status.User.Name + (string.IsNullOrEmpty(status.User.Organization) ? "" : status.User.Organization))</td>
                 <td>@status.RsvpResponse.ToString()</td>
                 <td>
                     <a asp-action="Respond" asp-controller="Response" asp-route-id="@status.RequestId" class="btn btn-link">返信</a> |

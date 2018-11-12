@@ -71,6 +71,10 @@ namespace rsvpyes.Controllers
             {
                 Meeting = meeting,
                 ResponseStatus = status
+                    .OrderBy(o => o.RsvpResponse.Rsvp == Rsvp.Yes ? 0 : o.RsvpResponse.Rsvp == Rsvp.No ? 1 : 2)
+                    .ThenBy(o => o.User.Organization)
+                    .ThenBy(o => o.User.Name)
+                    .ToList(),
             });
         }
 

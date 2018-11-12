@@ -10,21 +10,33 @@
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-lg btn-block">参加する</button>
         </div>
-        <p></p>
-        <div><a href="#" id="respond-to-no-link">参加しない場合はこちら</a></div>
     </form>
 </div>
-<div id="no" class="hidden">
+<div id="no">
+    <div class="form-group">
+        <button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#respondNoModal">参加しない</button>
+    </div>
     <form asp-action="RespondNo" asp-route-id="@Model.Id">
-        <div class="form-group">
-            <label for="reason">参加しない理由</label>
-            <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-danger btn-lg btn-block">参加しない</button>
-        </div>
-        <p></p>
-        <div><a href="#" id="respond-to-yes-link">参加する場合はこちら</a></div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="respondNoModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">不参加の理由をお聞かせください</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="reason">参加しない理由</label>
+                            <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                        <button type="submit" class="btn btn-danger">参加しない</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </form>
 </div>
 <hr />
@@ -32,6 +44,18 @@
 <script>
     (function () {
         'use strict';
+        var checked = false;
+
+        $('#RespondNoButton').on('submit', function () {
+            if (checked) {
+                return true;
+            }
+
+            if (!$reason.val()) {
+
+                return false;
+            }
+        });
         var noLink = document.getElementById('respond-to-no-link');
         var yesLink = document.getElementById('respond-to-yes-link');
         var yesPanel = document.getElementById('yes');

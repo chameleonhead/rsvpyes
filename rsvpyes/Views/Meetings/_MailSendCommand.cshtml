@@ -2,10 +2,12 @@
 
 @{
     var users = (ViewData["users"] as IEnumerable<rsvpyes.Data.User>)
+        .OrderBy(u => u.Organization)
+        .ThenBy(u => u.Name)
         .Select(u => new SelectListItem()
         {
             Value = u.Id.ToString(),
-            Text = u.Name
+            Text = u.Name + (string.IsNullOrEmpty(u.Organization) ? "" : $" ({u.Organization})")
         });
 }
 

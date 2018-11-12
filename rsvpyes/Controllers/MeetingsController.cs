@@ -216,7 +216,7 @@ namespace rsvpyes.Controllers
 {meeting.PlaceName}{(string.IsNullOrEmpty(meeting.PlaceUri) ? "" : Environment.NewLine + meeting.PlaceUri)}
  
 会費
-{meeting.Fee.ToString("#,#0")} 円
+{meeting.Fee?.ToString("#,#0円")}
 "
             });
         }

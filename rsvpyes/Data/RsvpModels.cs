@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace rsvpyes.Data
 {
@@ -13,10 +14,12 @@ namespace rsvpyes.Data
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        [DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; }
         public string PlaceName { get; set; }
         public string PlaceUri { get; set; }
-        public decimal Fee { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal? Fee { get; set; }
     }
 
     public class RsvpRequest

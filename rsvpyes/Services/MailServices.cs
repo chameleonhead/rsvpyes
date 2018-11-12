@@ -56,21 +56,32 @@ namespace rsvpyes.Services
     public class MailService : IMailService
     {
         private IDataService<User> usersService;
+        private IDataService<Message> messageService;
         private IDataService<RsvpRequest> rsvpRequestsService;
         private IMailConfiguration configuration;
 
         public MailService(
             IDataService<User> usersService,
+            IDataService<Message> messageService,
             IDataService<RsvpRequest> rsvpRequestsService,
             IMailConfiguration configuration)
         {
             this.usersService = usersService;
+            this.messageService = messageService;
             this.rsvpRequestsService = rsvpRequestsService;
             this.configuration = configuration;
         }
+
         public async Task Send(MailSendCommand command)
         {
             var sender = await usersService.Find(command.SenderId);
+            var message = await messageService.Insert(new Message()
+            {
+                SenderUserId = sender.Id,
+                SendTimestamp = DateTime.Now,
+                Title = command.Title,
+                Body = command.Message
+            });
 
             using (var client = new SmtpClient(configuration.Host, configuration.Port))
             {
@@ -80,13 +91,16 @@ namespace rsvpyes.Services
                     var rsvpRequest = await rsvpRequestsService.Insert(new RsvpRequest()
                     {
                         MeetingId = command.MeetingId,
+                        MessageId = message.Id,
                         UserId = userId,
                     });
 
                     var to = await usersService.Find(userId);
-                    var mailMessage = new MailMessage(sender.Email, to.Email);
-                    mailMessage.Subject = command.Title;
-                    mailMessage.Body = CreateMessage(to.Name, command.Message, command.ResponseUri, rsvpRequest.Id);
+                    var mailMessage = new MailMessage(sender.Email, to.Email)
+                    {
+                        Subject = command.Title,
+                        Body = CreateMessage(to.Name, command.Message, command.ResponseUri, rsvpRequest.Id)
+                    };
                     client.Send(mailMessage);
                 }
             }

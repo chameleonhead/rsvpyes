@@ -25,6 +25,7 @@ namespace rsvpyes
             services.AddSingleton<IRsvpDataService, RsvpDataService>();
             services.AddTransient<IDataService<User>, DataService<User>>();
             services.AddTransient<IDataService<Meeting>, DataService<Meeting>>();
+            services.AddTransient<IDataService<Message>, DataService<Message>>();
             services.AddTransient<IDataService<RsvpRequest>, DataService<RsvpRequest>>();
             services.AddTransient<IDataService<RsvpResponse>, DataService<RsvpResponse>>();
 

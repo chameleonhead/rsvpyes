@@ -24,6 +24,7 @@ namespace rsvpyes.Models.Meetings
     public sealed class MeetingInvitationResponseStatus
     {
         public Guid RequestId { get; set; }
+        public Guid? MessageId { get; set; }
         public User User { get; set; }
         public Response RsvpResponse { get; set; }
     }

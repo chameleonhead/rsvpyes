@@ -17,6 +17,7 @@ namespace rsvpyes.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public DbSet<RsvpRequest> RsvpRequests { get; set; }
         public DbSet<RsvpResponse> RsvpResponses { get; set; }
     }

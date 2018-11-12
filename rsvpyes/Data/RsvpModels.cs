@@ -16,6 +16,7 @@ namespace rsvpyes.Data
         public Guid Id { get; set; }
         public string Name { get; set; }
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
         public DateTime StartTime { get; set; }
         public string PlaceName { get; set; }
         public string PlaceUri { get; set; }
@@ -23,11 +24,21 @@ namespace rsvpyes.Data
         public decimal? Fee { get; set; }
     }
 
+    public class Message
+    {
+        public Guid Id { get; set; }
+        public DateTime SendTimestamp { get; set; }
+        public Guid SenderUserId { get; set; }
+        public string Title { get; set; }
+        public string Body { get; set; }
+    }
+
     public class RsvpRequest
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public Guid MeetingId { get; set; }
+        public Guid? MessageId { get; set; }
     }
 
     public enum Rsvp

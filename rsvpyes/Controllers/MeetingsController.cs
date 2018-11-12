@@ -59,6 +59,7 @@ namespace rsvpyes.Controllers
                 {
                     User = await usersService.Find(req.UserId),
                     RequestId = req.Id,
+                    MessageId = req.MessageId,
                     RsvpResponse = new Response()
                     {
                         Rsvp = (response?.Rsvp) ?? Rsvp.NotRespond,

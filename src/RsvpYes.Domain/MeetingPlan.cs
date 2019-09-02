@@ -50,7 +50,7 @@ namespace RsvpYes.Domain
 
         public MeetingId Id { get; }
         public UserId HostedBy { get; }
-        public string Name { get; }
+        public string Name { get; private set; }
         public DateTime CreatedAt { get; }
         public MeetingSchedule Schedule { get; private set; }
         public bool IsScheduleFixed => Schedule != null;
@@ -62,6 +62,10 @@ namespace RsvpYes.Domain
         public IEnumerable<MeetingScheduleCandidate> ScheduleCandidates => _meetingScheduleCandidates;
         public IEnumerable<MeetingPlaceCandidate> PlaceCandidates => _meetingPlaceCandidates;
 
+        public void UpdateName(string name)
+        {
+            Name = name;
+        }
 
         public void AddMainGuest(UserId userId)
         {

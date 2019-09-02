@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace RsvpYes.Domain
 {
@@ -8,7 +7,10 @@ namespace RsvpYes.Domain
     {
         public MeetingSchedule(DateTime startTime, TimeSpan duration)
         {
-            Contract.Ensures(duration > TimeSpan.Zero);
+            if (duration < TimeSpan.Zero)
+            {
+                throw new ArgumentException(Constants.DurationMustBeGreaterOrEqualToZero);
+            }
             BeginAt = startTime;
             EndAt = startTime + duration;
             Duration = duration;
@@ -16,7 +18,10 @@ namespace RsvpYes.Domain
 
         public MeetingSchedule(DateTime startTime, DateTime endTime)
         {
-            Contract.Requires(startTime < endTime);
+            if (startTime > endTime)
+            {
+                throw new ArgumentException(Constants.EndTimeMustBeGreaterOrEqualToStartTime);
+            }
             BeginAt = startTime;
             EndAt = endTime;
             Duration = endTime - startTime;

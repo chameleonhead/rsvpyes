@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RsvpYes.Domain
 {
@@ -7,7 +7,10 @@ namespace RsvpYes.Domain
     {
         public MeetingPlace(PlaceId placeId, string detailInfo)
         {
-            Contract.Ensures(placeId != null || detailInfo != null);
+            if (placeId == null && detailInfo == null)
+            {
+                throw new ArgumentNullException(nameof(placeId));
+            }
             PlaceId = placeId;
             DetailInfo = detailInfo;
         }

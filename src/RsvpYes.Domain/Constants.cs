@@ -10,5 +10,7 @@
         public const string CandidateScheduleNotExistsError = "指定された日程は存在しません。";
         public const string CandidatePlaceAlreadyExistsError = "既に存在する候補場所です。";
         public const string CandidatePlaceNotExistsError = "指定された候補場所は存在しません。";
+        public const string DurationMustBeGreaterOrEqualToZero = "時間には負の値を指定できません。";
+        public const string EndTimeMustBeGreaterOrEqualToStartTime = "終了時間は開始時間以降を指定してください。";
     }
 }

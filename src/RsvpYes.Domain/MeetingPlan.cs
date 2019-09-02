@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace RsvpYes.Domain
@@ -13,12 +12,9 @@ namespace RsvpYes.Domain
 
         public MeetingPlan(MeetingId id, UserId host, string name, DateTime createdAt)
         {
-            Contract.Requires<ArgumentNullException>(host != null);
-            Contract.Requires<ArgumentNullException>(name != null);
-
             Id = id;
-            HostedBy = host;
-            Name = name;
+            HostedBy = host ?? throw new ArgumentNullException(nameof(host));
+            Name = name ?? throw new ArgumentNullException(nameof(host));
             CreatedAt = createdAt;
             _participants = new List<Participant>();
             _participants.Add(new Participant(ParticipantRole.Host, host));
@@ -43,46 +39,122 @@ namespace RsvpYes.Domain
 
         public void AddMainGuest(UserId userId)
         {
-            Contract.Requires(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires(!_participants.Any(p => p.UserId.Equals(userId)), Constants.ParticipantAlreadyExists);
+            ThrowIfMeetingPlanFixed();
+            if (_participants.Any(p => p.UserId.Equals(userId)))
+            {
+                throw new InvalidOperationException(Constants.ParticipantAlreadyExists);
+            }
             _participants.Add(new Participant(ParticipantRole.MainGuest, userId));
         }
 
         public void AddGuest(UserId userId)
         {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires<InvalidOperationException>(!_participants.Any(p => p.UserId.Equals(userId)), Constants.ParticipantAlreadyExists);
+            ThrowIfMeetingPlanFixed();
+            if (_participants.Any(p => p.UserId.Equals(userId)))
+            {
+                throw new InvalidOperationException(Constants.ParticipantAlreadyExists);
+            }
             _participants.Add(new Participant(ParticipantRole.Guest, userId));
         }
 
         public void RemoveParticipant(UserId participantUserId)
         {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires<InvalidOperationException>(_participants.Any(p => p.UserId.Equals(participantUserId)), Constants.ParticipantNotExistsError);
+            ThrowIfMeetingPlanFixed();
+            if (!_participants.Any(p => p.UserId.Equals(participantUserId)))
+            {
+                throw new InvalidOperationException(Constants.ParticipantNotExistsError);
+            }
             var participant = _participants.First(p => p.UserId.Equals(participantUserId));
             _participants.Remove(participant);
         }
 
         public void AddCandidateSchedule(MeetingSchedule schedule)
         {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires<InvalidOperationException>(!_meetingScheduleCandidates.Any(c => c.Schedule.Equals(schedule)), Constants.CandidateScheduleAlreadyExistsError);
+            ThrowIfMeetingPlanFixed();
+            if (_meetingScheduleCandidates.Any(c => c.Schedule.Equals(schedule)))
+            {
+                throw new InvalidOperationException(Constants.CandidateScheduleAlreadyExistsError);
+            }
             _meetingScheduleCandidates.Add(new MeetingScheduleCandidate(Id, schedule));
             FixScheduleIfCandidateIsOnlyOne();
         }
 
         public void RemoveCandidateSchedule(MeetingSchedule schedule)
         {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires<InvalidOperationException>(_meetingScheduleCandidates.Any(c => c.Schedule.Equals(schedule)), Constants.CandidateScheduleNotExistsError);
+            ThrowIfMeetingPlanFixed();
+            if (!_meetingScheduleCandidates.Any(c => c.Schedule.Equals(schedule)))
+            {
+                throw new InvalidOperationException(Constants.CandidateScheduleNotExistsError);
+            }
             var candidate = _meetingScheduleCandidates.First(c => c.Schedule.Equals(schedule));
             _meetingScheduleCandidates.Remove(candidate);
             FixScheduleIfCandidateIsOnlyOne();
         }
 
+        public void SelectCandidateSchedule(MeetingSchedule schedule)
+        {
+            ThrowIfMeetingPlanFixed();
+            if (!_meetingScheduleCandidates.Any(c => c.Schedule.Equals(schedule)))
+            {
+                throw new InvalidOperationException(Constants.CandidateScheduleNotExistsError);
+            }
+            Schedule = schedule;
+        }
+
+        public void AddCandidatePlace(MeetingPlace place)
+        {
+            ThrowIfMeetingPlanFixed();
+            if (_meetingPlaceCandidates.Any(c => c.Place.Equals(place)))
+            {
+                throw new InvalidOperationException(Constants.CandidatePlaceAlreadyExistsError);
+            }
+            _meetingPlaceCandidates.Add(new MeetingPlaceCandidate(Id, place));
+            FixPlaceIfCandidateIsOnlyOne();
+        }
+
+        public void RemoveCandidatePlace(MeetingPlace place)
+        {
+            ThrowIfMeetingPlanFixed();
+            if (!_meetingPlaceCandidates.Any(c => c.Place.Equals(place)))
+            {
+                throw new InvalidOperationException(Constants.CandidatePlaceNotExistsError);
+            }
+            var candidate = _meetingPlaceCandidates.First(c => c.Place.Equals(place));
+            _meetingPlaceCandidates.Remove(candidate);
+            FixPlaceIfCandidateIsOnlyOne();
+        }
+
+        public void SelectCandidatePlace(MeetingPlace place)
+        {
+            ThrowIfMeetingPlanFixed();
+            if (!_meetingPlaceCandidates.Any(c => c.Place.Equals(place)))
+            {
+                throw new InvalidOperationException(Constants.CandidatePlaceNotExistsError);
+            }
+            Place = place;
+        }
+
+        public Meeting Fix()
+        {
+            ThrowIfMeetingPlanFixed();
+            if (!IsScheduleFixed || !IsPlaceFixed)
+            {
+                throw new InvalidOperationException(Constants.FixScheduleAndPlaceFirst);
+            }
+            IsFixed = true;
+            return new Meeting(Id, Name, Schedule, Place, _participants);
+        }
+
+        private void ThrowIfMeetingPlanFixed()
+        {
+            if (IsFixed)
+            {
+                throw new InvalidOperationException(Constants.MeetingPlanAlreadyFixed);
+            }
+        }
+
         private void FixScheduleIfCandidateIsOnlyOne()
         {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
             if (_meetingScheduleCandidates.Count == 1)
             {
                 Schedule = _meetingScheduleCandidates[0].Schedule;
@@ -93,33 +165,9 @@ namespace RsvpYes.Domain
             }
         }
 
-        public void SelectCandidateSchedule(MeetingSchedule schedule)
-        {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires<InvalidOperationException>(_meetingScheduleCandidates.Any(c => c.Schedule.Equals(schedule)), Constants.CandidateScheduleNotExistsError);
-            Schedule = schedule;
-        }
-
-        public void AddCandidatePlace(MeetingPlace place)
-        {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires<InvalidOperationException>(!_meetingPlaceCandidates.Any(c => c.Place.Equals(place)), Constants.CandidatePlaceAlreadyExistsError);
-            _meetingPlaceCandidates.Add(new MeetingPlaceCandidate(Id, place));
-            FixPlaceIfCandidateIsOnlyOne();
-        }
-
-        public void RemoveCandidatePlace(MeetingPlace place)
-        {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires<InvalidOperationException>(_meetingPlaceCandidates.Any(c => c.Place.Equals(place)), Constants.CandidatePlaceNotExistsError);
-            var candidate = _meetingPlaceCandidates.First(c => c.Place.Equals(place));
-            _meetingPlaceCandidates.Remove(candidate);
-            FixPlaceIfCandidateIsOnlyOne();
-        }
-
         private void FixPlaceIfCandidateIsOnlyOne()
         {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
+            ThrowIfMeetingPlanFixed();
             if (_meetingPlaceCandidates.Count == 1)
             {
                 Place = _meetingPlaceCandidates[0].Place;
@@ -128,21 +176,6 @@ namespace RsvpYes.Domain
             {
                 Place = null;
             }
-        }
-
-        public void SelectCandidatePlace(MeetingPlace place)
-        {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires<InvalidOperationException>(_meetingPlaceCandidates.Any(c => c.Place.Equals(place)), Constants.CandidatePlaceNotExistsError);
-            Place = place;
-        }
-
-        public Meeting Fix()
-        {
-            Contract.Requires<InvalidOperationException>(!IsFixed, Constants.MeetingPlanAlreadyFixed);
-            Contract.Requires<InvalidOperationException>(IsScheduleFixed && IsPlaceFixed, Constants.FixScheduleAndPlaceFirst);
-            IsFixed = true;
-            return new Meeting(Id, Name, Schedule, Place, _participants);
         }
     }
 }

@@ -196,7 +196,7 @@ namespace RsvpYes.Domain.Tests
 
             Assert.AreEqual(true, sut.IsFixed);
             Assert.AreEqual(sut.Id, meeting.Id);
-            Assert.AreEqual("Meeting1", meeting.Name);
+            Assert.AreEqual("V“üĞˆõŠ½Œ}‰ï", meeting.Name);
             Assert.AreEqual(schedule1, meeting.Schedule);
             Assert.AreEqual(place1, meeting.Place);
             CollectionAssert.AreEquivalent(new[]

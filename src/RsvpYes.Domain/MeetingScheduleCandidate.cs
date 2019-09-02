@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
 
 namespace RsvpYes.Domain
 {
@@ -6,10 +6,8 @@ namespace RsvpYes.Domain
     {
         public MeetingScheduleCandidate(MeetingId meetingId, MeetingSchedule schedule)
         {
-            Contract.Requires(meetingId != null);
-            Contract.Requires(schedule != null);
-            MeetingId = meetingId;
-            Schedule = schedule;
+            MeetingId = meetingId ?? throw new ArgumentNullException(nameof(meetingId));
+            Schedule = schedule ?? throw new ArgumentNullException(nameof(schedule));
         }
 
         public MeetingId MeetingId { get; }

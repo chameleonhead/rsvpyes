@@ -10,16 +10,42 @@ namespace RsvpYes.Domain
         private readonly List<MeetingScheduleCandidate> _meetingScheduleCandidates;
         private readonly List<MeetingPlaceCandidate> _meetingPlaceCandidates;
 
-        public MeetingPlan(MeetingId id, UserId host, string name, DateTime createdAt)
+        public MeetingPlan(UserId hostedBy, string name, DateTime createdAt)
         {
-            Id = id;
-            HostedBy = host ?? throw new ArgumentNullException(nameof(host));
-            Name = name ?? throw new ArgumentNullException(nameof(host));
+            Id = new MeetingId();
+            HostedBy = hostedBy ?? throw new ArgumentNullException(nameof(hostedBy));
+            Name = name ?? throw new ArgumentNullException(nameof(hostedBy));
             CreatedAt = createdAt;
-            _participants = new List<Participant>();
-            _participants.Add(new Participant(ParticipantRole.Host, host));
+            _participants = new List<Participant>
+            {
+                new Participant(ParticipantRole.Host, hostedBy)
+            };
             _meetingScheduleCandidates = new List<MeetingScheduleCandidate>();
             _meetingPlaceCandidates = new List<MeetingPlaceCandidate>();
+        }
+
+        public MeetingPlan(
+            MeetingId id, 
+            UserId hostedBy, 
+            string name, 
+            DateTime createdAt, 
+            MeetingPlace place,
+            MeetingSchedule schedule,
+            bool isFixed,
+            IEnumerable<Participant> participants,
+            IEnumerable<MeetingPlaceCandidate> meetingPlaceCandidates,
+            IEnumerable<MeetingScheduleCandidate> meetingScheduleCandidates)
+        {
+            Id = id;
+            HostedBy = hostedBy;
+            Name = name;
+            CreatedAt = createdAt;
+            Place = place;
+            Schedule = schedule;
+            IsFixed = isFixed;
+            _participants = participants.ToList();
+            _meetingPlaceCandidates = meetingPlaceCandidates.ToList();
+            _meetingScheduleCandidates = meetingScheduleCandidates.ToList();
         }
 
         public MeetingId Id { get; }
@@ -30,12 +56,12 @@ namespace RsvpYes.Domain
         public bool IsScheduleFixed => Schedule != null;
         public MeetingPlace Place { get; private set; }
         public bool IsPlaceFixed => Place != null;
+        public bool IsFixed { get; private set; }
 
         public IEnumerable<Participant> Participants => _participants;
         public IEnumerable<MeetingScheduleCandidate> ScheduleCandidates => _meetingScheduleCandidates;
         public IEnumerable<MeetingPlaceCandidate> PlaceCandidates => _meetingPlaceCandidates;
 
-        public bool IsFixed { get; private set; }
 
         public void AddMainGuest(UserId userId)
         {
@@ -75,7 +101,7 @@ namespace RsvpYes.Domain
             {
                 throw new InvalidOperationException(Constants.CandidateScheduleAlreadyExistsError);
             }
-            _meetingScheduleCandidates.Add(new MeetingScheduleCandidate(Id, schedule));
+            _meetingScheduleCandidates.Add(new MeetingScheduleCandidate(schedule));
             FixScheduleIfCandidateIsOnlyOne();
         }
 
@@ -108,7 +134,7 @@ namespace RsvpYes.Domain
             {
                 throw new InvalidOperationException(Constants.CandidatePlaceAlreadyExistsError);
             }
-            _meetingPlaceCandidates.Add(new MeetingPlaceCandidate(Id, place));
+            _meetingPlaceCandidates.Add(new MeetingPlaceCandidate(place));
             FixPlaceIfCandidateIsOnlyOne();
         }
 

@@ -10,7 +10,7 @@ namespace RsvpYes.Domain
             Value = Guid.NewGuid();
         }
 
-        internal PlaceId(Guid value)
+        public PlaceId(Guid value)
         {
             Value = value;
         }

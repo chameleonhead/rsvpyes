@@ -7,7 +7,6 @@ namespace RsvpYes.Domain.Tests
     [TestClass]
     public class SettingUpMeetingTests
     {
-        private MeetingId meetingId;
         private MeetingPlan sut;
         private UserId host;
         private DateTime createdAt;
@@ -21,10 +20,9 @@ namespace RsvpYes.Domain.Tests
         [TestInitialize]
         public void Initialize()
         {
-            meetingId = new MeetingId();
             host = new UserId();
             createdAt = DateTime.UtcNow;
-            sut = new MeetingPlan(meetingId, host, "V“üĞˆõŠ½Œ}‰ï", createdAt);
+            sut = new MeetingPlan(host, "V“üĞˆõŠ½Œ}‰ï", createdAt);
             user1 = new UserId();
             user2 = new UserId();
             schedule1 = new MeetingSchedule(new DateTime(2019, 09, 20, 18, 30, 00, DateTimeKind.Local), TimeSpan.FromHours(2));

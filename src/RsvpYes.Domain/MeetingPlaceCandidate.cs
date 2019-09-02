@@ -2,13 +2,11 @@
 {
     public class MeetingPlaceCandidate
     {
-        public MeetingPlaceCandidate(MeetingId meetingId, MeetingPlace place)
+        public MeetingPlaceCandidate(MeetingPlace place)
         {
-            MeetingId = meetingId;
             Place = place;
         }
 
-        public MeetingId MeetingId { get; }
         public MeetingPlace Place { get; }
     }
 }

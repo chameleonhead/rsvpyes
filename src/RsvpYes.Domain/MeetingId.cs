@@ -10,7 +10,7 @@ namespace RsvpYes.Domain
             Value = Guid.NewGuid();
         }
 
-        internal MeetingId(Guid value)
+        public MeetingId(Guid value)
         {
             Value = value;
         }

@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsvpYes.Application", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsvpYes.Application.Tests", "tests\RsvpYes.Application.Tests\RsvpYes.Application.Tests.csproj", "{9388DB47-EB35-4410-A67B-C4DBCC898B5A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{940ACBB2-D7F3-409D-9C9B-C1F632F5B968}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsvpYes.Web", "src\RsvpYes.Web\RsvpYes.Web.csproj", "{4A3D88AF-6FC6-4514-AD45-7983E39087AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{9388DB47-EB35-4410-A67B-C4DBCC898B5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9388DB47-EB35-4410-A67B-C4DBCC898B5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9388DB47-EB35-4410-A67B-C4DBCC898B5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A3D88AF-6FC6-4514-AD45-7983E39087AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A3D88AF-6FC6-4514-AD45-7983E39087AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A3D88AF-6FC6-4514-AD45-7983E39087AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A3D88AF-6FC6-4514-AD45-7983E39087AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +70,7 @@ Global
 		{B5B52A63-EAEB-4D9D-A97F-2F41C2AD6489} = {439D2167-31DD-4361-AAEB-7F3D7446E16D}
 		{FC9E3A3B-3779-4DD3-ADFF-9B0854C1E9B8} = {84808EAB-6A8F-4D55-8FF8-895F0888302E}
 		{9388DB47-EB35-4410-A67B-C4DBCC898B5A} = {84808EAB-6A8F-4D55-8FF8-895F0888302E}
+		{4A3D88AF-6FC6-4514-AD45-7983E39087AC} = {940ACBB2-D7F3-409D-9C9B-C1F632F5B968}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4F1235DC-52B6-41C4-96C0-B6B414715C85}

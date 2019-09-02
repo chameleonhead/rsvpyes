@@ -5,7 +5,7 @@ using System.Linq;
 namespace RsvpYes.Domain.Tests
 {
     [TestClass]
-    public class SettingUpMeetingTests
+    public class MeetingPlanTests
     {
         private MeetingPlan sut;
         private UserId host;

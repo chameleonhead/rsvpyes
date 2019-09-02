@@ -6,7 +6,7 @@ namespace RsvpYes.Application.Tests.Utils
 {
     public class InMemoryMeetingPlanRepository : IMeetingPlanRepository
     {
-        private Dictionary<MeetingId, MeetingPlan> _store = new Dictionary<MeetingId, MeetingPlan>();
+        private readonly Dictionary<MeetingId, MeetingPlan> _store = new Dictionary<MeetingId, MeetingPlan>();
 
         public Task<MeetingPlan> FindByIdAsync(MeetingId meetingId)
         {

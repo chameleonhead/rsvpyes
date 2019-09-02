@@ -26,7 +26,7 @@ namespace RsvpYes.Application
             await _repository.SaveAsync(meetingPlan).ConfigureAwait(false);
         }
 
-        public async Task UpdateParticipantsAsync(MeetingPlanUpdateParticipantsGuest command)
+        public async Task UpdateParticipantsAsync(MeetingPlanUpdateParticipantsCommand command)
         {
             var meetingPlan = await _repository.FindByIdAsync(command.MeetingId).ConfigureAwait(false);
             foreach (var userId in command.ParticipantsToRemove)

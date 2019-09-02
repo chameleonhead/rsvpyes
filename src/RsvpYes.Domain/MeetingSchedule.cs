@@ -9,7 +9,7 @@ namespace RsvpYes.Domain
         {
             if (duration < TimeSpan.Zero)
             {
-                throw new ArgumentException(Constants.DurationMustBeGreaterOrEqualToZero);
+                throw new ArgumentException(Constants.DurationMustBeGreaterOrEqualToZeroError);
             }
             BeginAt = startTime;
             EndAt = startTime + duration;
@@ -20,7 +20,7 @@ namespace RsvpYes.Domain
         {
             if (startTime > endTime)
             {
-                throw new ArgumentException(Constants.EndTimeMustBeGreaterOrEqualToStartTime);
+                throw new ArgumentException(Constants.EndTimeMustBeGreaterOrEqualToStartTimeError);
             }
             BeginAt = startTime;
             EndAt = endTime;

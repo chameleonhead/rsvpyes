@@ -12,16 +12,15 @@ namespace RsvpYes.Domain
 
         public MeetingPlan(UserId hostedBy, string name, DateTime createdAt)
         {
+            _participants = new List<Participant>();
+            _meetingScheduleCandidates = new List<MeetingScheduleCandidate>();
+            _meetingPlaceCandidates = new List<MeetingPlaceCandidate>();
+
             Id = new MeetingId();
             HostedBy = hostedBy ?? throw new ArgumentNullException(nameof(hostedBy));
             Name = name ?? throw new ArgumentNullException(nameof(hostedBy));
             CreatedAt = createdAt;
-            _participants = new List<Participant>
-            {
-                new Participant(ParticipantRole.Host, hostedBy)
-            };
-            _meetingScheduleCandidates = new List<MeetingScheduleCandidate>();
-            _meetingPlaceCandidates = new List<MeetingPlaceCandidate>();
+            _participants.Add(new Participant(ParticipantRole.Host, hostedBy));
         }
 
         public MeetingPlan(

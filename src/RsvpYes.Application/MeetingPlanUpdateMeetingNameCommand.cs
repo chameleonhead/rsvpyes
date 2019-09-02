@@ -2,9 +2,9 @@
 
 namespace RsvpYes.Application
 {
-    public class MeetingPlanUpdateCommand
+    public class MeetingPlanUpdateMeetingNameCommand
     {
-        public MeetingPlanUpdateCommand(MeetingId meetingId, string meetingName)
+        public MeetingPlanUpdateMeetingNameCommand(MeetingId meetingId, string meetingName)
         {
             MeetingId = meetingId;
             MeetingName = meetingName;

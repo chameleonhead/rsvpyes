@@ -5,9 +5,14 @@ namespace RsvpYes.Application
 {
     public class MeetingPlanUpdateParticipantsCommand
     {
+        public MeetingPlanUpdateParticipantsCommand(MeetingId meetingId)
+        {
+            MeetingId = meetingId;
+        }
+
         public MeetingId MeetingId { get; set; }
-        public IEnumerable<UserId> ParticipantsToRemove { get; } = new List<UserId>();
-        public IEnumerable<UserId> MainGuests { get; } = new List<UserId>();
-        public IEnumerable<UserId> Guests { get; } = new List<UserId>();
+        public List<UserId> ParticipantsToRemove { get; } = new List<UserId>();
+        public List<UserId> MainGuests { get; } = new List<UserId>();
+        public List<UserId> Guests { get; } = new List<UserId>();
     }
 }

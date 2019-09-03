@@ -1,4 +1,4 @@
-﻿using RsvpYes.Domain;
+﻿using RsvpYes.Domain.Meetings;
 using System.Threading.Tasks;
 
 namespace RsvpYes.Application

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using RsvpYes.Domain.Users;
+using System.Collections.Generic;
 
-namespace RsvpYes.Domain
+namespace RsvpYes.Domain.Meetings
 {
     public class Participant
     {

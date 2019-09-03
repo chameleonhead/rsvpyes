@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RsvpYes.Domain
+namespace RsvpYes.Domain.Users
 {
     public class User
     {

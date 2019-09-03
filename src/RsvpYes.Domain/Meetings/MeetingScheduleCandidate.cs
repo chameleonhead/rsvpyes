@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RsvpYes.Domain
+namespace RsvpYes.Domain.Meetings
 {
     public class MeetingScheduleCandidate
     {

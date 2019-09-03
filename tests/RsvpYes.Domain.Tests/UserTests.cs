@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RsvpYes.Domain.Users;
 using System.Linq;
 
 namespace RsvpYes.Domain.Tests
@@ -61,6 +62,23 @@ namespace RsvpYes.Domain.Tests
         {
             sut.UpdateOrganizationId(org2);
             Assert.AreEqual(org2, sut.OrganizationId);
+        }
+
+        [TestMethod]
+        public void ユーザーの所属を削除する()
+        {
+            sut.AddMailAddress(mail2);
+            sut.AddMailAddress(mail3);
+            sut.AddMailAddress(mail4);
+            sut.AddMailAddress(mail5);
+            sut.RemoveMailAddress(mail1);
+            Assert.AreEqual(mail2, sut.DefaultMailAddress);
+            sut.RemoveMailAddress(mail2);
+            sut.RemoveMailAddress(mail3);
+            sut.RemoveMailAddress(mail4);
+            sut.RemoveMailAddress(mail5);
+            Assert.IsNull(sut.DefaultMailAddress);
+            Assert.IsFalse(sut.MailAddresses.Any());
         }
 
         [TestMethod]

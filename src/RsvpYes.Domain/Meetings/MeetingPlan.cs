@@ -1,8 +1,9 @@
-﻿using System;
+﻿using RsvpYes.Domain.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RsvpYes.Domain
+namespace RsvpYes.Domain.Meetings
 {
     public class MeetingPlan
     {

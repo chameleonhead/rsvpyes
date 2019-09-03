@@ -1,4 +1,4 @@
-﻿namespace RsvpYes.Domain
+﻿namespace RsvpYes.Domain.Users
 {
     public class Organization
     {

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace RsvpYes.Domain
+namespace RsvpYes.Domain.Places
 {
-    public class MailAddress
+    public class Url
     {
-        public MailAddress(string value)
+        public Url(string value)
         {
             Value = value;
         }
@@ -13,8 +13,8 @@ namespace RsvpYes.Domain
 
         public override bool Equals(object obj)
         {
-            return obj is MailAddress address &&
-                   Value == address.Value;
+            return obj is Url url &&
+                   Value == url.Value;
         }
 
         public override int GetHashCode()

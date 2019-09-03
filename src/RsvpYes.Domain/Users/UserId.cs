@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RsvpYes.Domain
+namespace RsvpYes.Domain.Users
 {
-    public class PlaceId
+    public class UserId
     {
-        public PlaceId()
+        public UserId()
         {
             Value = Guid.NewGuid();
         }
 
-        public PlaceId(Guid value)
+        public UserId(Guid value)
         {
             Value = value;
         }
@@ -19,7 +19,7 @@ namespace RsvpYes.Domain
 
         public override bool Equals(object obj)
         {
-            return obj is PlaceId id &&
+            return obj is UserId id &&
                    Value.Equals(id.Value);
         }
 

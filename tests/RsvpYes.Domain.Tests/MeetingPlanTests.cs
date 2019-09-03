@@ -1,4 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RsvpYes.Domain.Meetings;
+using RsvpYes.Domain.Places;
+using RsvpYes.Domain.Users;
 using System;
 using System.Linq;
 

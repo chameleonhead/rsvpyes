@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RsvpYes.Domain
+namespace RsvpYes.Domain.Meetings
 {
-    public class MeetingId
+    public class MeetingAdjustmentId
     {
-        public MeetingId()
+        public MeetingAdjustmentId()
         {
             Value = Guid.NewGuid();
         }
 
-        public MeetingId(Guid value)
+        public MeetingAdjustmentId(Guid value)
         {
             Value = value;
         }
@@ -19,7 +19,7 @@ namespace RsvpYes.Domain
 
         public override bool Equals(object obj)
         {
-            return obj is MeetingId id &&
+            return obj is MeetingAdjustmentId id &&
                    Value.Equals(id.Value);
         }
 

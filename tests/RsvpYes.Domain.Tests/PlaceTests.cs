@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RsvpYes.Domain.Places;
 
 namespace RsvpYes.Domain.Tests
 {

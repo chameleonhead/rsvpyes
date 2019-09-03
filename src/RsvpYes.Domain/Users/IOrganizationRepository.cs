@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace RsvpYes.Domain
+namespace RsvpYes.Domain.Users
 {
     public interface IOrganizationRepository
     {

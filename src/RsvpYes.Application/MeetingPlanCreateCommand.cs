@@ -1,4 +1,5 @@
-﻿using RsvpYes.Domain;
+﻿using RsvpYes.Domain.Meetings;
+using RsvpYes.Domain.Users;
 using System;
 using System.Collections.Generic;
 

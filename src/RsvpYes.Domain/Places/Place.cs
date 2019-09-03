@@ -1,4 +1,4 @@
-﻿namespace RsvpYes.Domain
+﻿namespace RsvpYes.Domain.Places
 {
     public class Place
     {

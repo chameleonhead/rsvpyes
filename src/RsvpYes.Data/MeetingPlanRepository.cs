@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RsvpYes.Data.MeetingPlans;
 using RsvpYes.Domain;
+using RsvpYes.Domain.Meetings;
+using RsvpYes.Domain.Places;
+using RsvpYes.Domain.Users;
 using System.Linq;
 using System.Threading.Tasks;
 

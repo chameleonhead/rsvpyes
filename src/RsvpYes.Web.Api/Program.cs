@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace RsvpYes.Web
+namespace RsvpYes.Web.Api
 {
     public class Program
     {

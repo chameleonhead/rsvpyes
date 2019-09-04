@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RsvpYes.Data.Meetings;
+using RsvpYes.Data.Places;
 using RsvpYes.Data.Users;
 
 namespace RsvpYes.Data
@@ -14,6 +15,8 @@ namespace RsvpYes.Data
         internal DbSet<MeetingPlanParticipantEntity> MeetingPlanParticipants { get; set; }
         internal DbSet<MeetingPlanPlaceCandidateEntity> MeetingPlanPlaceCandidates { get; set; }
         internal DbSet<MeetingPlanScheduleCandidateEntity> MeetingPlanScheduleCandidates { get; set; }
+
+        internal DbSet<PlaceEntity> Places { get;  set; }
 
         internal DbSet<OrganizationEntity> Organizations { get; set; }
         internal DbSet<UserEntity> Users { get; set; }

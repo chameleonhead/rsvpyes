@@ -79,6 +79,11 @@ namespace RsvpYes.Data
         public async Task<MeetingPlan> FindByIdAsync(MeetingId meetingId)
         {
             var meetingPlanEntity = await _context.MeetingPlans.FindAsync(meetingId.Value).ConfigureAwait(false);
+            if (meetingPlanEntity == null)
+            {
+                return null;
+            }
+
             var meetingPlanParticipantEntities = await _context.MeetingPlanParticipants.Where(m => m.MeetingId == meetingId.Value).ToListAsync().ConfigureAwait(false);
             var meetingPlanPlaceCandidateEntities = await _context.MeetingPlanPlaceCandidates.Where(m => m.MeetingId == meetingId.Value).ToListAsync().ConfigureAwait(false);
             var meetingPlanScheduleCandidateEntities = await _context.MeetingPlanScheduleCandidates.Where(m => m.MeetingId == meetingId.Value).ToListAsync().ConfigureAwait(false);

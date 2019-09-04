@@ -23,6 +23,24 @@ namespace RsvpYes.Domain.Users
             }
         }
 
+        public User(
+            UserId userId,
+            string name,
+            MailAddress mailAddress,
+            OrganizationId organizationId,
+            IEnumerable<MailAddress> mailAddresses,
+            IEnumerable<PhoneNumber> phoneNumbers,
+            string messageSignature)
+        {
+            Id = userId;
+            Name = name;
+            DefaultMailAddress = mailAddress;
+            OrganizationId = organizationId;
+            _mailAddresses = mailAddresses.ToList();
+            _phoneNumbers = phoneNumbers.ToList();
+            MessageSignature = messageSignature;
+        }
+
         public UserId Id { get; }
         public string Name { get; private set; }
         public string MessageSignature { get; private set; }
@@ -37,14 +55,14 @@ namespace RsvpYes.Domain.Users
             Name = name;
         }
 
-        public void UpdateMessageSignature(string signature)
-        {
-            MessageSignature = signature?.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", Environment.NewLine);
-        }
-
         public void UpdateOrganizationId(OrganizationId organizationId)
         {
             OrganizationId = organizationId;
+        }
+
+        public void UpdateMessageSignature(string signature)
+        {
+            MessageSignature = signature?.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", Environment.NewLine);
         }
 
         public void AddMailAddress(MailAddress mailAddress)

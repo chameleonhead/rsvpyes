@@ -1,5 +1,6 @@
 ﻿using RsvpYes.Domain.Meetings;
 using RsvpYes.Domain.Places;
+using RsvpYes.Domain.Users;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -42,6 +43,15 @@ namespace RsvpYes.Application.Tests.Utils
         : InMemoryRepository<PlaceId, Place>, IPlaceRepository
     {
         public InMemoryPlaceRepository()
+            : base(e => e.Id)
+        {
+        }
+    }
+
+    public class InMemoryUserRepository
+        : InMemoryRepository<UserId, User>, IUserRepository
+    {
+        public InMemoryUserRepository()
             : base(e => e.Id)
         {
         }

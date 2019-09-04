@@ -65,6 +65,15 @@ namespace RsvpYes.Domain.Users
             MessageSignature = signature?.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", Environment.NewLine);
         }
 
+        public void SetDefaultMailAddress(MailAddress mailAddress)
+        {
+            if (!_mailAddresses.Contains(mailAddress))
+            {
+                throw new InvalidOperationException(Constants.UserMailAddressNotExistsError);
+            }
+            DefaultMailAddress = mailAddress;
+        }
+
         public void AddMailAddress(MailAddress mailAddress)
         {
             if (_mailAddresses.Count >= 5)
@@ -79,6 +88,10 @@ namespace RsvpYes.Domain.Users
             if (!_mailAddresses.Contains(mailAddress))
             {
                 throw new InvalidOperationException(Constants.UserMailAddressNotExistsError);
+            }
+            if (_mailAddresses.Count == 1)
+            {
+                throw new InvalidOperationException(Constants.UserMailAddressMustHaveAtLeastOne);
             }
             _mailAddresses.Remove(mailAddress);
             SetDefaultMailAddressIfNeeded();

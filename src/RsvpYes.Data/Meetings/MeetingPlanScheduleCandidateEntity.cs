@@ -2,7 +2,7 @@
 
 namespace RsvpYes.Data.Meetings
 {
-    internal class MeetingPlanScheduleCandidateEntity
+    class MeetingPlanScheduleCandidateEntity
     {
         public Guid MeetingId { get; set; }
         public int Seq { get; set; }

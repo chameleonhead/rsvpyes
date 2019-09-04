@@ -2,11 +2,9 @@
 
 namespace RsvpYes.Data.Users
 {
-    class UserEntity
+    class OrganizationEntity
     {
         public Guid Id { get; set; }
-        public Guid OrganizationId { get; set; }
         public string Name { get; set; }
-        public string DefaultMailAddress { get; set; }
     }
 }

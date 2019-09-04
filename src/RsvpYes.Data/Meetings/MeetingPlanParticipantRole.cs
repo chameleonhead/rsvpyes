@@ -1,6 +1,6 @@
 ﻿namespace RsvpYes.Data.Meetings
 {
-    internal enum MeetingPlanParticipantRole
+    enum MeetingPlanParticipantRole
     {
         Host,
         MainGuest,

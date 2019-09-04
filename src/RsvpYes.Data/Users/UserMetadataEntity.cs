@@ -2,7 +2,7 @@
 
 namespace RsvpYes.Data.Users
 {
-    internal class UserMetadataEntity
+    class UserMetadataEntity
     {
         public Guid UserId { get; set; }
         public string Key { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RsvpYes.Data.Meetings
 {
-    internal class MeetingPlanEntity
+    class MeetingPlanEntity
     {
         public Guid Id { get; set; }
         public Guid HostedBy { get; set; }

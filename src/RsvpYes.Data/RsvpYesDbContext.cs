@@ -15,15 +15,19 @@ namespace RsvpYes.Data
         internal DbSet<MeetingPlanPlaceCandidateEntity> MeetingPlanPlaceCandidates { get; set; }
         internal DbSet<MeetingPlanScheduleCandidateEntity> MeetingPlanScheduleCandidates { get; set; }
 
+        internal DbSet<OrganizationEntity> Organizations { get; set; }
         internal DbSet<UserEntity> Users { get; set; }
         internal DbSet<UserMetadataEntity> UserMetadata { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MeetingPlanParticipantEntity>().HasKey(p => new { p.MeetingId, p.UserId });
-            modelBuilder.Entity<MeetingPlanPlaceCandidateEntity>().HasKey(p => new { p.MeetingId, p.Seq });
-            modelBuilder.Entity<MeetingPlanScheduleCandidateEntity>().HasKey(p => new { p.MeetingId, p.Seq });
-            modelBuilder.Entity<UserMetadataEntity>().HasKey(p => new { p.UserId, p.Key });
+            modelBuilder.Entity<MeetingPlanEntity>().HasKey(e => e.Id);
+            modelBuilder.Entity<MeetingPlanParticipantEntity>().HasKey(e => new { e.MeetingId, e.UserId });
+            modelBuilder.Entity<MeetingPlanPlaceCandidateEntity>().HasKey(e => new { e.MeetingId, e.Seq });
+            modelBuilder.Entity<MeetingPlanScheduleCandidateEntity>().HasKey(e => new { e.MeetingId, e.Seq });
+            modelBuilder.Entity<OrganizationEntity>().HasKey(e => e.Id);
+            modelBuilder.Entity<UserEntity>().HasKey(e => e.Id);
+            modelBuilder.Entity<UserMetadataEntity>().HasKey(e => new { e.UserId, e.Key });
         }
     }
 }

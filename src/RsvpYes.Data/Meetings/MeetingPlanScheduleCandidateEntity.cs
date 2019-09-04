@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace RsvpYes.Data.MeetingPlans
+namespace RsvpYes.Data.Meetings
 {
-    public class MeetingPlanScheduleCandidateEntity
+    internal class MeetingPlanScheduleCandidateEntity
     {
         public Guid MeetingId { get; set; }
         public int Seq { get; set; }

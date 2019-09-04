@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
-namespace RsvpYes.Data.MeetingPlans
+namespace RsvpYes.Data.Meetings
 {
-    public class MeetingPlanEntity
+    internal class MeetingPlanEntity
     {
         public Guid Id { get; set; }
         public Guid HostedBy { get; set; }

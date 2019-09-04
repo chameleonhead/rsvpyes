@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RsvpYes.Data.MeetingPlans;
+using RsvpYes.Data.Meetings;
 
 namespace RsvpYes.Data
 {
@@ -9,10 +9,10 @@ namespace RsvpYes.Data
         {
         }
 
-        public DbSet<MeetingPlanEntity> MeetingPlans { get; internal set; }
-        public DbSet<MeetingPlanParticipantEntity> MeetingPlanParticipants { get; internal set; }
-        public DbSet<MeetingPlanPlaceCandidateEntity> MeetingPlanPlaceCandidates { get; internal set; }
-        public DbSet<MeetingPlanScheduleCandidateEntity> MeetingPlanScheduleCandidates { get; internal set; }
+        internal DbSet<MeetingPlanEntity> MeetingPlans { get; set; }
+        internal DbSet<MeetingPlanParticipantEntity> MeetingPlanParticipants { get; set; }
+        internal DbSet<MeetingPlanPlaceCandidateEntity> MeetingPlanPlaceCandidates { get; set; }
+        internal DbSet<MeetingPlanScheduleCandidateEntity> MeetingPlanScheduleCandidates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

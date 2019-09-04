@@ -29,6 +29,8 @@ namespace RsvpYes.Data
                 Name = place.Name,
                 Url = place.Url.Value,
             });
+
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task<Place> FindByIdAsync(PlaceId placeId)

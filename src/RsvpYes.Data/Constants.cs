@@ -13,5 +13,7 @@
         public const string UserMetadataPhoneNumber4 = "PHONE_NUMBER_4";
         public const string UserMetadataPhoneNumber5 = "PHONE_NUMBER_5";
         public const string UserMetadataMessageSignature = "MESSAGE_SIGNATURE";
+
+        public const string IdentityAccountNameMustUniqueError = "ユーザーアカウントは一意でなければなりません。";
     }
 }

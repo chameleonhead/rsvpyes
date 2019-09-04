@@ -1,6 +1,6 @@
-﻿using RsvpYes.Data.Users;
+﻿using Microsoft.EntityFrameworkCore;
+using RsvpYes.Data.Users;
 using RsvpYes.Domain.Users;
-using System;
 using System.Threading.Tasks;
 
 namespace RsvpYes.Data
@@ -28,16 +28,30 @@ namespace RsvpYes.Data
                 Id = organizationId,
                 Name = organization.Name
             });
+
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task<Organization> FindByIdAsync(OrganizationId organizationId)
         {
             var organizationEntity = await _context.Organizations.FindAsync(organizationId.Value).ConfigureAwait(false);
+            return ConvertToOrganization(organizationEntity);
+        }
+
+        public async Task<Organization> FindByNameAsync(string organizationName)
+        {
+            var organizationEntity = await _context.Organizations.FirstOrDefaultAsync(e => e.Name == organizationName).ConfigureAwait(false);
+            return ConvertToOrganization(organizationEntity);
+        }
+
+        private static Organization ConvertToOrganization(OrganizationEntity organizationEntity)
+        {
             if (organizationEntity == null)
             {
                 return null;
             }
-            return new Organization(organizationId, organizationEntity.Name);
+
+            return new Organization(new OrganizationId(organizationEntity.Id), organizationEntity.Name);
         }
     }
 }

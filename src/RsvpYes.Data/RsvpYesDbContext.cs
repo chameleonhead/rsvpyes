@@ -21,6 +21,7 @@ namespace RsvpYes.Data
 
         internal DbSet<PlaceEntity> Places { get; set; }
 
+        internal DbSet<IdentityEntity> Identities { get; set; }
         internal DbSet<OrganizationEntity> Organizations { get; set; }
         internal DbSet<UserEntity> Users { get; set; }
         internal DbSet<UserMetadataEntity> UserMetadata { get; set; }

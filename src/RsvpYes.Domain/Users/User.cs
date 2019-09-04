@@ -91,7 +91,7 @@ namespace RsvpYes.Domain.Users
             }
             if (_mailAddresses.Count == 1)
             {
-                throw new InvalidOperationException(Constants.UserMailAddressMustHaveAtLeastOne);
+                throw new InvalidOperationException(Constants.UserMailAddressMustHaveAtLeastOneError);
             }
             _mailAddresses.Remove(mailAddress);
             SetDefaultMailAddressIfNeeded();

@@ -16,6 +16,6 @@
         public const string UserPhoneNumberCanStoreLessThanOrEqualToFiveError = "ユーザーの電話番号は最大5件まで登録できます。";
         public const string UserMailAddressNotExistsError = "指定されたメールアドレスがユーザーにはありません。";
         public const string UserPhoneNumberNotExistsError = "指定された電話番号がユーザーにはありません。";
-        public const string UserMailAddressMustHaveAtLeastOne = "ユーザーにはメールアドレスが最低でも1つは必要です。";
+        public const string UserMailAddressMustHaveAtLeastOneError = "ユーザーにはメールアドレスが最低でも1つは必要です。";
     }
 }

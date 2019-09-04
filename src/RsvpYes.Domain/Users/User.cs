@@ -25,6 +25,8 @@ namespace RsvpYes.Domain.Users
 
         public UserId Id { get; }
         public string Name { get; private set; }
+        public string MessageSignature { get; private set; }
+
         public OrganizationId OrganizationId { get; private set; }
         public MailAddress DefaultMailAddress { get; private set; }
         public IEnumerable<MailAddress> MailAddresses => _mailAddresses.ToList();
@@ -33,6 +35,11 @@ namespace RsvpYes.Domain.Users
         public void UpdateName(string name)
         {
             Name = name;
+        }
+
+        public void UpdateMessageSignature(string signature)
+        {
+            MessageSignature = signature?.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", Environment.NewLine);
         }
 
         public void UpdateOrganizationId(OrganizationId organizationId)

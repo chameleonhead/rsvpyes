@@ -65,6 +65,13 @@ namespace RsvpYes.Domain.Tests
         }
 
         [TestMethod]
+        public void ユーザーの署名を更新する()
+        {
+            sut.UpdateMessageSignature("==");
+            Assert.AreEqual("==", sut.MessageSignature);
+        }
+
+        [TestMethod]
         public void ユーザーの所属を削除する()
         {
             sut.AddMailAddress(mail2);

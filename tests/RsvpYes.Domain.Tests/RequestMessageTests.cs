@@ -13,7 +13,7 @@ namespace RsvpYes.Domain.Tests
         {
             var from = new User("Test User", new MailAddress("test@test.com"), new OrganizationId());
             var to = new User("Test User", new MailAddress("test@test.com"), new OrganizationId());
-            var message = new RequestMessage(from, to, "test message", "http://response");
+            var message = new RequestMessage(from, to, "test title", "test message", "http://response");
             Assert.AreEqual(string.Concat(
                 "Test User 様", Environment.NewLine,
                 Environment.NewLine,
@@ -22,7 +22,7 @@ namespace RsvpYes.Domain.Tests
                 "回答は以下のURLよりお願いいたします。", Environment.NewLine,
                 "http://response", Environment.NewLine,
                 Environment.NewLine,
-                "以上", Environment.NewLine), message.MessageBody);
+                "以上", Environment.NewLine), message.Body);
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace RsvpYes.Domain.Tests
             var from = new User("Test User", new MailAddress("test@test.com"), new OrganizationId());
             from.UpdateMessageSignature("==================\nTest User");
             var to = new User("Test User", new MailAddress("test@test.com"), new OrganizationId());
-            var message = new RequestMessage(from, to, "test message", "http://response");
+            var message = new RequestMessage(from, to, "test title", "test message", "http://response");
             Assert.AreEqual(string.Concat(
                 "Test User 様", Environment.NewLine,
                 Environment.NewLine,
@@ -43,7 +43,7 @@ namespace RsvpYes.Domain.Tests
                 "以上", Environment.NewLine,
                 Environment.NewLine,
                 "==================", Environment.NewLine,
-                "Test User", Environment.NewLine), message.MessageBody);
+                "Test User", Environment.NewLine), message.Body);
         }
     }
 }

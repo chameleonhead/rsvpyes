@@ -2,7 +2,7 @@
 
 namespace RsvpYes.Domain.Messaging
 {
-    interface IMessageService
+    public interface IMessageService
     {
         Task SendAsync(IMessage message);
     }

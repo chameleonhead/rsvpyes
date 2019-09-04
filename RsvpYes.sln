@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RsvpYes.Web", "src\RsvpYes.Web\RsvpYes.Web.csproj", "{4A3D88AF-6FC6-4514-AD45-7983E39087AC}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "rsvpyes-web-frontend", "rsvpyes-web-frontend\rsvpyes-web-frontend.njsproj", "{F195CA2E-CB0B-488F-9B0D-BAC8614BE29F}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "rsvpyes-web-frontend", "src\rsvpyes-web-frontend\rsvpyes-web-frontend.njsproj", "{F195CA2E-CB0B-488F-9B0D-BAC8614BE29F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

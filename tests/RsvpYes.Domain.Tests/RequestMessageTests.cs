@@ -22,7 +22,7 @@ namespace RsvpYes.Domain.Tests
                 "回答は以下のURLよりお願いいたします。", Environment.NewLine,
                 "http://response", Environment.NewLine,
                 Environment.NewLine,
-                "以上", Environment.NewLine), message.RenderMessageBody());
+                "以上", Environment.NewLine), message.MessageBody);
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace RsvpYes.Domain.Tests
                 "以上", Environment.NewLine,
                 Environment.NewLine,
                 "==================", Environment.NewLine,
-                "Test User", Environment.NewLine), message.RenderMessageBody());
+                "Test User", Environment.NewLine), message.MessageBody);
         }
     }
 }

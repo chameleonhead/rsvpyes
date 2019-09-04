@@ -3,24 +3,19 @@ using System;
 
 namespace RsvpYes.Domain.Messaging
 {
-    public class RequestMessage : IMessage
+    public class RequestMessage : MessageBase
     {
         public RequestMessage(User from, User to, string message, string responseUrl)
+            : base(from, to)
         {
-            Id = new MessageId();
-            From = from;
-            To = to;
             Message = message;
             ResponseUrl = responseUrl;
         }
 
-        public MessageId Id { get; }
-        public User From { get; }
-        public User To { get; }
         public string Message { get; }
         public string ResponseUrl { get; }
 
-        public string RenderMessageBody()
+        protected override string RenderMessageBody()
         {
             var signature = From.MessageSignature != null
                 ? string.Concat(Environment.NewLine, From.MessageSignature, Environment.NewLine)

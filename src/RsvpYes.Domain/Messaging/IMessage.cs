@@ -7,6 +7,6 @@ namespace RsvpYes.Domain.Messaging
         MessageId Id { get; }
         User From { get; }
         User To { get; }
-        string RenderMessageBody();
+        string MessageBody { get; }
     }
 }

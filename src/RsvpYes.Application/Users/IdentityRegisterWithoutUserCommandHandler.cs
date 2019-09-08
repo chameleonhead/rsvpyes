@@ -21,7 +21,7 @@ namespace RsvpYes.Application.Users
             _userRepository = userRepository;
         }
 
-        public async Task<Unit> Handle(IdentityRegisterWithoutUserCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(IdentityRegisterWithoutUserCommand command, CancellationToken cancellationToken = default)
         {
             var organization = default(Organization);
             if (!string.IsNullOrEmpty(command.OrganizationName))

@@ -3,6 +3,7 @@ using RsvpYes.Domain.Places;
 using RsvpYes.Domain.Users;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RsvpYes.Application.Tests.Utils
@@ -10,7 +11,7 @@ namespace RsvpYes.Application.Tests.Utils
     public class InMemoryRepository<TIdentity, T>
         where T : class
     {
-        private readonly Dictionary<TIdentity, T> _store = new Dictionary<TIdentity, T>();
+        protected readonly Dictionary<TIdentity, T> _store = new Dictionary<TIdentity, T>();
         private readonly Func<T, TIdentity> _func;
 
         public InMemoryRepository(Func<T, TIdentity> func)
@@ -18,14 +19,14 @@ namespace RsvpYes.Application.Tests.Utils
             _func = func;
         }
 
-        public Task<T> FindByIdAsync(TIdentity meetingId)
+        public Task<T> FindByIdAsync(TIdentity id)
         {
-            return Task.FromResult(_store.TryGetValue(meetingId, out var value) ? value : null);
+            return Task.FromResult(_store.TryGetValue(id, out var value) ? value : null);
         }
 
-        public Task SaveAsync(T meetingPlan)
+        public Task SaveAsync(T data)
         {
-            _store[_func(meetingPlan)] = meetingPlan;
+            _store[_func(data)] = data;
             return Task.CompletedTask;
         }
     }
@@ -54,6 +55,34 @@ namespace RsvpYes.Application.Tests.Utils
         public InMemoryUserRepository()
             : base(e => e.Id)
         {
+        }
+    }
+
+    public class InMemoryIdentityRepository
+        : InMemoryRepository<IdentityId, Identity>, IIdentityRepository
+    {
+        public InMemoryIdentityRepository()
+            : base(e => e.Id)
+        {
+        }
+
+        public Task<Identity> FindByAccountNameAndPasswordAsync(string accountName, string passwordHash)
+        {
+            return Task.FromResult(_store.Values.SingleOrDefault(v => v.AccountName == accountName && v.PasswordHash == passwordHash));
+        }
+    }
+
+    public class InMemoryOrganizationRepository
+        : InMemoryRepository<OrganizationId, Organization>, IOrganizationRepository
+    {
+        public InMemoryOrganizationRepository()
+            : base(e => e.Id)
+        {
+        }
+
+        public Task<Organization> FindByNameAsync(string organizationName)
+        {
+            return Task.FromResult(_store.Values.FirstOrDefault(v => v.Name == organizationName));
         }
     }
 }

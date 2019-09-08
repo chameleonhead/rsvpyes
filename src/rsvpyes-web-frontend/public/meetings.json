@@ -1,0 +1,12 @@
+{
+  "meetings": [
+    {
+      "id": 1,
+      "name": "Meeting1"
+    },
+    {
+      "id": 2,
+      "name": "Meeting2"
+    }
+  ]
+}

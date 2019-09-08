@@ -1,32 +1,20 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Container from '@material-ui/core/Container';
-import { Button } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
+import withAuth from '../containers/withAuth';
 
-class Login extends React.Component {
+function Login(props) {
+  let { from } = props.location.state || { from: { pathname: "/" } };
+  let redirectToReferrer = props.auth.isAuthenticated;
 
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
+  if (redirectToReferrer) return <Redirect to={from} />;
 
-  handleClick() {
-    this.props.onLogin();
-  }
-
-  render() {
-    let { from } = this.props.location.state || { from: { pathname: "/" } };
-    let redirectToReferrer = this.props.auth.isAuthenticated;
-
-    if (redirectToReferrer) return <Redirect to={from} />;
-
-    return (
-      <Container>
-        <h1>Login</h1>
-        <Button onClick={this.handleClick}>LOGIN</Button>
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <h1>Login</h1>
+      <Button onClick={props.login}>LOGIN</Button>
+    </Container>
+  );
 }
 
-export default Login;
+export default withAuth(Login);

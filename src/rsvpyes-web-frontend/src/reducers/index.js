@@ -1,14 +1,17 @@
-import auth from './auth';
 import { combineReducers } from 'redux'
+import auth from './auth';
+import meetings from './meetings';
+import { LOGOUT } from '../actions';
 
 const reducers = {
-  auth
+  auth,
+  meetings
 };
 
 const appReducer = combineReducers(reducers);
 
 const rootReducer = (state, action) => {
-  if (action.type === 'SIGN_OUT') {
+  if (action.type === LOGOUT) {
     state = undefined;
   }
   return appReducer(state, action);

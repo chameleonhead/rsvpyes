@@ -1,21 +1,18 @@
 import { connect } from 'react-redux'
-import { requestLogin, logout } from '../actions'
+import { fetchMeetings } from '../actions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    auth: state.auth
+    meetings: state.meetings.meetings
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    login: () => {
-      dispatch(requestLogin(null, null))
-    },
-    logout: () => {
-      dispatch(logout());
+    fetchMeetings: () => {
+      dispatch(fetchMeetings());
     }
-  }
+  };
 }
 
 export default connect(

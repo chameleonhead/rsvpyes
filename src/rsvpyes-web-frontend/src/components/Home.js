@@ -1,12 +1,10 @@
 import React from 'react';
-import Meetings from './Meetings'
+import Meetings from '../components/Meetings';
 
-class Home extends React.Component {
-  render() {
-    return (
-      <Meetings />
-    );
-  }
+function Home(props) {
+  return (
+    <Meetings {...props}/>
+  );
 }
 
 export default Home;

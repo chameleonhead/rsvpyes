@@ -1,26 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/styles';
+import theme from './theme';
+import Login from './containers/LoginContainer';
+import ProtectedRoute from './containers/ProtectedRoute';
+import Home from './components/Home';
+import Meetings from './components/Meetings';
+import NotFound from './components/NotFound';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isAuthenticated: false
+    };
+  }
+
+  render() {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <Switch>
+            <Route path="/login" component={Login} />
+            <ProtectedRoute path="/" exact component={Home} />
+            <ProtectedRoute path="/meetings" component={Meetings} />
+            <Route component={NotFound} />
+          </Switch>
+        </Router>
+      </ThemeProvider>
+    );
+  }
 }
 
 export default App;

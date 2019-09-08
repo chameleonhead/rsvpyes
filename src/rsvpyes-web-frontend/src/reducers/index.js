@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
-import auth from './auth';
-import meetings from './meetings';
+import authReducer from './authReducer';
+import meetingsReducer from './meetingsReducer';
 import { LOGOUT } from '../actions';
 
 const reducers = {
-  auth,
-  meetings
+  auth: authReducer,
+  meetings: meetingsReducer
 };
 
 const appReducer = combineReducers(reducers);

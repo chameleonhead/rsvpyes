@@ -9,8 +9,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    login: () => {
-      dispatch(requestLogin(null, null))
+    login: ({ userName, password }) => {
+      dispatch(requestLogin({ userName, password }))
     },
     logout: () => {
       dispatch(logout());
@@ -18,9 +18,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(
+const withAuth = connect(
   mapStateToProps,
   mapDispatchToProps
 );
+
+export default withAuth;
 
 

@@ -5,7 +5,7 @@ const initialState = {
   meetings: [],
 };
 
-function meetings(state = initialState, action) {
+function meetingsReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_MEETINGS_REQUESTED:
       return Object.assign({}, state, {
@@ -21,4 +21,4 @@ function meetings(state = initialState, action) {
   }
 };
 
-export default meetings;
+export default meetingsReducer;

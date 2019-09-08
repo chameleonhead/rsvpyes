@@ -4,7 +4,7 @@ const initialState = {
   isAuthenticated: false,
 };
 
-function auth(state = initialState, action) {
+function authReducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_REQUESTED:
       return Object.assign({}, state, {
@@ -21,4 +21,4 @@ function auth(state = initialState, action) {
   }
 };
 
-export default auth;
+export default authReducer;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Container } from '@material-ui/core';
-import withAuth from '../containers/withAuth';
+import withAuth from './withAuth';
 
 function Login(props) {
   let { from } = props.location.state || { from: { pathname: "/" } };

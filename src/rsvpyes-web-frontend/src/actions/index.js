@@ -1,6 +1,6 @@
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';
-export function requestLogin(userName, password) {
-  return { type: LOGIN_REQUESTED, userName, password };
+export function requestLogin({ userName, password }) {
+  return { type: LOGIN_REQUESTED, payload: { userName, password } };
 }
 
 export const LOGIN_ACCEPTED = 'LOGIN_ACCEPTED';

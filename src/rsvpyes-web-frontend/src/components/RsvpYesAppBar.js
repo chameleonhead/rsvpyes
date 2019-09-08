@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
-import withAuth from '../containers/withAuth';
+import withAuth from './withAuth';
 
 function RsvpYesAppBar(props) {
   if (props.location.pathname === '/login') {

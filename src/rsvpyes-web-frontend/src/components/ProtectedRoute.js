@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import withAuth from '../containers/withAuth';
+import withAuth from './withAuth';
 
 function ProtectedRoute({ component: Component, auth, ...rest }) {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, CssBaseline, Paper, Typography } from '@material-ui/core';
-import withMeetings from '../containers/withMeetings';
+import withMeetings from './withMeetings';
 
 function Meeting(props) {
   return (

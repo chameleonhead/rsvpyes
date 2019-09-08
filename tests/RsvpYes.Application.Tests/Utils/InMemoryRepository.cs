@@ -68,7 +68,12 @@ namespace RsvpYes.Application.Tests.Utils
 
         public Task<Identity> FindByAccountNameAndPasswordAsync(string accountName, string passwordHash)
         {
-            return Task.FromResult(_store.Values.SingleOrDefault(v => v.AccountName == accountName && v.PasswordHash == passwordHash));
+            return Task.FromResult(_store.Values.SingleOrDefault(v => v.AccountName.ToUpperInvariant() == accountName.ToUpperInvariant() && v.PasswordHash == passwordHash));
+        }
+
+        public Task<Identity> FindByAccountNameAsync(string accountName)
+        {
+            return Task.FromResult(_store.Values.SingleOrDefault(v => v.AccountName.ToUpperInvariant() == accountName.ToUpperInvariant()));
         }
     }
 

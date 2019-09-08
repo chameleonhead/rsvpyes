@@ -44,7 +44,16 @@ namespace RsvpYes.Data
         public async Task<Identity> FindByAccountNameAndPasswordAsync(string accountName, string passwordHash)
         {
             var identityEntity = await _context.Identities
-                .Where(e => e.AccountName == accountName && e.PasswordHash == passwordHash)
+                .Where(e => e.AccountName.ToUpperInvariant() == accountName.ToUpperInvariant() && e.PasswordHash == passwordHash)
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+            return ConvertToIdentity(identityEntity);
+        }
+
+        public async Task<Identity> FindByAccountNameAsync(string accountName)
+        {
+            var identityEntity = await _context.Identities
+                .Where(e => e.AccountName.ToUpperInvariant() == accountName.ToUpperInvariant())
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
             return ConvertToIdentity(identityEntity);

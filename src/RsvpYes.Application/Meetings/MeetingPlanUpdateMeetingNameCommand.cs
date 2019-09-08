@@ -1,8 +1,9 @@
-﻿using RsvpYes.Domain.Meetings;
+﻿using MediatR;
+using RsvpYes.Domain.Meetings;
 
-namespace RsvpYes.Application
+namespace RsvpYes.Application.Meetings
 {
-    public class MeetingPlanUpdateMeetingNameCommand
+    public class MeetingPlanUpdateMeetingNameCommand : IRequest
     {
         public MeetingPlanUpdateMeetingNameCommand(MeetingId meetingId, string meetingName)
         {

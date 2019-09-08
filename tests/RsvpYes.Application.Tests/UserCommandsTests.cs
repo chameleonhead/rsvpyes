@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RsvpYes.Application.Tests.Utils;
+using RsvpYes.Application.Users;
 using RsvpYes.Domain.Users;
 using System;
 using System.Linq;
@@ -10,7 +11,6 @@ namespace RsvpYes.Application.Tests
     [TestClass]
     public class UserServiceTests
     {
-        private UserService sut;
         private OrganizationId org1;
         private OrganizationId org2;
         private MailAddress mail1;
@@ -31,7 +31,6 @@ namespace RsvpYes.Application.Tests
         public async Task Initialize()
         {
             repo = new InMemoryUserRepository();
-            sut = new UserService(repo);
             org1 = new OrganizationId();
             org2 = new OrganizationId();
             mail1 = new MailAddress("mail1@example.com");
@@ -45,7 +44,8 @@ namespace RsvpYes.Application.Tests
             tel4 = new PhoneNumber("090-1000-0004");
             tel5 = new PhoneNumber("090-1000-0005");
             createCommand = new UserCreateCommand("User1", mail1, org1);
-            userId = await sut.CreateAsync(createCommand).ConfigureAwait(false);
+            var sut = new UserCreateCommandHandler(repo);
+            userId = await sut.Handle(createCommand).ConfigureAwait(false);
         }
 
         [TestMethod]
@@ -64,7 +64,8 @@ namespace RsvpYes.Application.Tests
             command.UserMailAddressesToAdd.AddRange(new[] { mail2, mail3, mail4, mail5 });
             command.UserPhoneNumberToAdd.AddRange(new[] { tel1, tel2, tel3, tel4, tel5 });
 
-            await sut.UpdateAsync(command).ConfigureAwait(false);
+            var sut = new UserUpdateCommandHandler(repo);
+            await sut.Handle(command).ConfigureAwait(false);
 
             var user = await repo.FindByIdAsync(userId).ConfigureAwait(false);
             Assert.AreEqual(command.UserName, user.Name);
@@ -84,7 +85,7 @@ namespace RsvpYes.Application.Tests
             command.UserMailAddressesToRemove.AddRange(new[] { mail2, mail3, mail4, mail5 });
             command.UserPhoneNumberToRemove.AddRange(new[] { tel1, tel2, tel3, tel4, tel5 });
 
-            await sut.UpdateAsync(command).ConfigureAwait(false);
+            await sut.Handle(command).ConfigureAwait(false);
 
             user = await repo.FindByIdAsync(userId).ConfigureAwait(false);
             Assert.AreEqual(command.UserName, user.Name);

@@ -1,8 +1,9 @@
-﻿using RsvpYes.Domain.Places;
+﻿using MediatR;
+using RsvpYes.Domain.Places;
 
-namespace RsvpYes.Application
+namespace RsvpYes.Application.Places
 {
-    public class PlaceCreateCommand
+    public class PlaceCreateCommand : IRequest<PlaceId>
     {
         public PlaceCreateCommand(string placeName, Url placeUrl)
         {

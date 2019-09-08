@@ -1,25 +1,20 @@
-﻿using RsvpYes.Domain.Users;
+﻿using MediatR;
+using RsvpYes.Domain.Users;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace RsvpYes.Application
+namespace RsvpYes.Application.Users
 {
-    public class UserService
+    public class UserUpdateCommandHandler : IRequestHandler<UserUpdateCommand>
     {
         private readonly IUserRepository _repository;
 
-        public UserService(IUserRepository repository)
+        public UserUpdateCommandHandler(IUserRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<UserId> CreateAsync(UserCreateCommand command)
-        {
-            var user = new User(command.UserName, command.UserMailAddress, command.UserOrganizationId);
-            await _repository.SaveAsync(user);
-            return user.Id;
-        }
-
-        public async Task UpdateAsync(UserUpdateCommand command)
+        public async Task<Unit> Handle(UserUpdateCommand command, CancellationToken cancellation = default)
         {
             var user = await _repository.FindByIdAsync(command.UserId).ConfigureAwait(false);
             user.UpdateName(command.UserName);
@@ -44,6 +39,7 @@ namespace RsvpYes.Application
                 user.AddPhoneNumber(phone);
             }
             await _repository.SaveAsync(user).ConfigureAwait(false);
+            return Unit.Value;
         }
     }
 }

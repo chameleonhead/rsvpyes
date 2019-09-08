@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RsvpYes.Application.Meetings;
 using RsvpYes.Application.Tests.Utils;
 using RsvpYes.Domain.Meetings;
 using RsvpYes.Domain.Places;
@@ -10,9 +11,8 @@ using System.Threading.Tasks;
 namespace RsvpYes.Application.Tests
 {
     [TestClass]
-    public class MeetingPlanServiceTests
+    public class MeetingPlanCommandsTests
     {
-        private MeetingPlanService sut;
         private IMeetingPlanRepository repo;
         private MeetingPlanCreateCommand createCommand;
         private MeetingId meetingId;
@@ -21,11 +21,11 @@ namespace RsvpYes.Application.Tests
         public async Task Initialize()
         {
             repo = new InMemoryMeetingPlanRepository();
-            sut = new MeetingPlanService(repo);
+            var sut = new MeetingPlanCreateCommandHandler(repo);
             createCommand = new MeetingPlanCreateCommand("Meeting1", new UserId());
             createCommand.Schedules.Add(new MeetingSchedule(new DateTime(2019, 9, 10, 19, 20, 00, DateTimeKind.Utc), TimeSpan.FromHours(2)));
             createCommand.Places.Add(new MeetingPlace(null, "PLACE"));
-            meetingId = await sut.CreateAsync(createCommand).ConfigureAwait(false);
+            meetingId = await sut.Handle(createCommand).ConfigureAwait(false);
         }
 
         [TestMethod]
@@ -41,7 +41,8 @@ namespace RsvpYes.Application.Tests
         public async Task 会予定の名前更新コマンドのテスト()
         {
             var command = new MeetingPlanUpdateMeetingNameCommand(meetingId, "Meeting2");
-            await sut.UpdateAsync(command).ConfigureAwait(false);
+            var sut = new MeetingPlanUpdateMeetingNameCommandHandler(repo);
+            await sut.Handle(command).ConfigureAwait(false);
             var meetingPlan = await repo.FindByIdAsync(meetingId).ConfigureAwait(false);
             Assert.AreEqual(command.MeetingName, meetingPlan.Name);
         }
@@ -53,7 +54,8 @@ namespace RsvpYes.Application.Tests
             command.ParticipantsToRemove.Add(createCommand.Host);
             var guest = new UserId();
             command.Guests.Add(guest);
-            await sut.UpdateAsync(command).ConfigureAwait(false);
+            var sut = new MeetingPlanUpdateParticipantsCommandHandler(repo);
+            await sut.Handle(command).ConfigureAwait(false);
             var meetingPlan = await repo.FindByIdAsync(meetingId).ConfigureAwait(false);
             CollectionAssert.AreEquivalent(
                 new[] { guest },
@@ -67,7 +69,8 @@ namespace RsvpYes.Application.Tests
             var command = new MeetingPlanUpdateSchedulesCommand(meetingId);
             command.SchedulesToRemove.AddRange(createCommand.Schedules);
             command.SchedulesToAdd.Add(schedule);
-            await sut.UpdateAsync(command).ConfigureAwait(false);
+            var sut = new MeetingPlanUpdateSchedulesCommandHandler(repo);
+            await sut.Handle(command).ConfigureAwait(false);
             var meetingPlan = await repo.FindByIdAsync(meetingId).ConfigureAwait(false);
             CollectionAssert.AreEquivalent(
                 new[] { schedule },
@@ -81,7 +84,8 @@ namespace RsvpYes.Application.Tests
             var command = new MeetingPlanUpdatePlacesCommand(meetingId);
             command.PlacesToRemove.AddRange(createCommand.Places);
             command.PlacesToAdd.Add(place);
-            await sut.UpdateAsync(command).ConfigureAwait(false);
+            var sut = new MeetingPlanUpdatePlacesCommandHandler(repo);
+            await sut.Handle(command).ConfigureAwait(false);
             var meetingPlan = await repo.FindByIdAsync(meetingId).ConfigureAwait(false);
             CollectionAssert.AreEquivalent(
                 new[] { place },

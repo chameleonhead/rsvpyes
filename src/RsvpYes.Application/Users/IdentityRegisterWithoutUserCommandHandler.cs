@@ -1,15 +1,17 @@
-﻿using RsvpYes.Domain.Users;
+﻿using MediatR;
+using RsvpYes.Domain.Users;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace RsvpYes.Application
+namespace RsvpYes.Application.Users
 {
-    public class IdentityService
+    public class IdentityRegisterWithoutUserCommandHandler : IRequestHandler<IdentityRegisterWithoutUserCommand>
     {
         private readonly IIdentityRepository _repository;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IUserRepository _userRepository;
 
-        public IdentityService(
+        public IdentityRegisterWithoutUserCommandHandler(
             IIdentityRepository repository,
             IOrganizationRepository organizationRepository,
             IUserRepository userRepository)
@@ -19,7 +21,7 @@ namespace RsvpYes.Application
             _userRepository = userRepository;
         }
 
-        public async Task Register(IdentityRegisterWithoutUserCommand command)
+        public async Task<Unit> Handle(IdentityRegisterWithoutUserCommand command, CancellationToken cancellationToken)
         {
             var organization = default(Organization);
             if (!string.IsNullOrEmpty(command.OrganizationName))
@@ -37,6 +39,7 @@ namespace RsvpYes.Application
 
             var identity = new Identity(command.AccountName, command.PasswordHash, user.Id);
             await _repository.SaveAsync(identity).ConfigureAwait(false);
+            return Unit.Value;
         }
     }
 }

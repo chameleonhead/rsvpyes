@@ -1,8 +1,9 @@
-﻿using RsvpYes.Domain.Places;
+﻿using MediatR;
+using RsvpYes.Domain.Places;
 
-namespace RsvpYes.Application
+namespace RsvpYes.Application.Places
 {
-    public class PlaceUpdateCommand
+    public class PlaceUpdateCommand : IRequest
     {
         public PlaceUpdateCommand(PlaceId placeId, string placeName, Url placeUrl)
         {

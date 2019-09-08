@@ -1,9 +1,10 @@
-﻿using RsvpYes.Domain.Meetings;
+﻿using MediatR;
+using RsvpYes.Domain.Meetings;
 using System.Collections.Generic;
 
-namespace RsvpYes.Application
+namespace RsvpYes.Application.Meetings
 {
-    public class MeetingPlanUpdateSchedulesCommand
+    public class MeetingPlanUpdateSchedulesCommand : IRequest
     {
         public MeetingPlanUpdateSchedulesCommand(MeetingId meetingId)
         {

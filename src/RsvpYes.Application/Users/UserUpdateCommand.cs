@@ -1,9 +1,10 @@
-﻿using RsvpYes.Domain.Users;
+﻿using MediatR;
+using RsvpYes.Domain.Users;
 using System.Collections.Generic;
 
-namespace RsvpYes.Application
+namespace RsvpYes.Application.Users
 {
-    public class UserUpdateCommand
+    public class UserUpdateCommand : IRequest
     {
         public UserUpdateCommand(UserId userId, string userName, MailAddress userDefaultMailAddress, OrganizationId organizationId, string userMessageSignature)
         {

@@ -1,8 +1,9 @@
-﻿using RsvpYes.Domain.Users;
+﻿using MediatR;
+using RsvpYes.Domain.Users;
 
-namespace RsvpYes.Application
+namespace RsvpYes.Application.Users
 {
-    public class UserCreateCommand
+    public class UserCreateCommand : IRequest<UserId>
     {
         public UserCreateCommand(string userName, MailAddress userMailAddress, OrganizationId userOrganizationId)
         {

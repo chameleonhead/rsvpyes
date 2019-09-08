@@ -1,12 +1,12 @@
-import { LOGIN_REQUEST, LOGIN_ACCEPTED } from '../actions';
+import { LOGIN_REQUESTED, LOGIN_ACCEPTED } from '../actions';
 
-export const initialState = {
-  isAuthenticated: false
+const initialState = {
+  isAuthenticated: false,
 };
 
-export default function auth(state = initialState, action) {
+function auth(state = initialState, action) {
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case LOGIN_REQUESTED:
       return Object.assign({}, state, {
         isAuthenticated: true,
       });
@@ -16,3 +16,5 @@ export default function auth(state = initialState, action) {
       return state;
   }
 };
+
+export default auth;

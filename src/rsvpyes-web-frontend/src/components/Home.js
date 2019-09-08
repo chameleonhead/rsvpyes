@@ -1,12 +1,10 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
+import Meetings from './Meetings'
 
 class Home extends React.Component {
   render() {
     return (
-      <Container>
-        <h1>Home</h1>
-      </Container>
+      <Meetings />
     );
   }
 }

@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import store from './store';
+import store from './redux/store';
 import theme from './theme';
 import RsvpYesAppBar from './components/RsvpYesAppBar';
 import Login from './components/Login';

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { fetchMeetings } from '../actions'
+import { fetchMeetings } from '../redux/actions'
 
 const mapStateToProps = (state, ownProps) => {
   return {

@@ -14,7 +14,7 @@ function meetingsReducer(state = initialState, action) {
     case FETCH_MEETINGS_SUCCEEDED:
       return Object.assign({}, state, {
         isFetching: false,
-        meetings: action.meetings
+        meetings: action.payload
       });
     default:
       return state;

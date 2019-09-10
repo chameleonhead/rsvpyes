@@ -3,6 +3,8 @@ using RsvpYes.Data.Meetings;
 using RsvpYes.Data.Messaging;
 using RsvpYes.Data.Places;
 using RsvpYes.Data.Users;
+using System;
+using System.Linq;
 
 namespace RsvpYes.Data
 {
@@ -10,6 +12,17 @@ namespace RsvpYes.Data
     {
         public RsvpYesDbContext(DbContextOptions options) : base(options)
         {
+            Database.EnsureCreated();
+            if (!Identities.Any())
+            {
+                Identities.Add(new IdentityEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    AccountName = "admin",
+                    PasswordHash = "AQAAAAEAACcQAAAAEMAL57tk5x40NvsLkLQOAlShnSg7Bf8zpFtlcyG6/R9MA0TLXChQQ3ApbfPVpwS1NA==" // Passw0rd
+                });
+                SaveChanges();
+            }
         }
 
         internal DbSet<MeetingPlanEntity> MeetingPlans { get; set; }

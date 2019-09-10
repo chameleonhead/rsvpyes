@@ -40,6 +40,7 @@ namespace RsvpYes.Web.Api
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders();
             services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
                 .AddInMemoryClients(new[] {
                     new Client()
                     {

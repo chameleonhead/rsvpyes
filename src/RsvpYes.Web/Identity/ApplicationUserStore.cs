@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace RsvpYes.Web.Identity
 {
-    public class ApplicationUserStore : IUserStore<ApplicationUser>
+    public class ApplicationUserStore : 
+        IUserStore<ApplicationUser>,
+        IUserPasswordStore<ApplicationUser>
     {
         private readonly IIdentityRepository _identityRepository;
 
@@ -81,6 +83,23 @@ namespace RsvpYes.Web.Identity
         public Task<IdentityResult> UpdateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<string> GetPasswordHashAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            var identity = await _identityRepository.FindByIdAsync(new IdentityId(new Guid(user.Id))).ConfigureAwait(false);
+            return identity.PasswordHash;
+        }
+
+        public async Task<bool> HasPasswordAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            var identity = await _identityRepository.FindByIdAsync(new IdentityId(new Guid(user.Id))).ConfigureAwait(false);
+            return !string.IsNullOrEmpty(identity?.PasswordHash);
         }
     }
 }

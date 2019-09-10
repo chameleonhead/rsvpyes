@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RsvpYes.Domain\RsvpYes.Domain.csproj" />
+    <ProjectReference Include="..\RsvpYes.Query\RsvpYes.Query.csproj" />
   </ItemGroup>
 
 </Project>

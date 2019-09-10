@@ -11,11 +11,13 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RsvpYes.Application\RsvpYes.Application.csproj" />
     <ProjectReference Include="..\RsvpYes.Data\RsvpYes.Data.csproj" />
-    <ProjectReference Include="..\RsvpYes.Domain\RsvpYes.Domain.csproj" />
+    <ProjectReference Include="..\RsvpYes.Query\RsvpYes.Query.csproj" />
   </ItemGroup>
 
 </Project>

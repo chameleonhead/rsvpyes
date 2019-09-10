@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, Grid } from '@material-ui/core';
 import withAuth from './withAuth';
 
 function RsvpYesAppBar(props) {
@@ -11,13 +11,15 @@ function RsvpYesAppBar(props) {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h5">RsvpYes</Typography>
-        {props.auth.isAuthenticated
-          ? <Button color="inherit" onClick={() => {
-            props.logout();
-            props.history.push('/');
-          }}>LOGOUT</Button>
-          : <Button color="inherit" onClick={() => props.history.push('/login')}>LOGIN</Button>}
+        <Grid container>
+          <Typography variant="h5" style={{ flexGrow: 1 }}>RsvpYes</Typography>
+          {props.auth.isAuthenticated
+            ? <Button color="inherit" onClick={() => {
+              props.logout();
+              props.history.push('/');
+            }}>LOGOUT</Button>
+            : <Button color="inherit" onClick={() => props.history.push('/login')}>LOGIN</Button>}
+        </Grid>
       </Toolbar>
     </AppBar>
   );

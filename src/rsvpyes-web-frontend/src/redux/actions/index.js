@@ -1,3 +1,5 @@
+import { LOGIN_URL } from "./constants";
+
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';
 export function requestLogin({ userName, password }) {
   return { type: LOGIN_REQUESTED, payload: { userName, password } };
@@ -27,7 +29,7 @@ export function login({ userName, password }) {
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
     };
-    return fetch('http://localhost:51254/connect/token', { method, headers, body })
+    return fetch(LOGIN_URL, { method, headers, body })
       .then(response => response.json())
       .then(json => json.access_token
         ? dispatch(acceptLogin(json.access_token))

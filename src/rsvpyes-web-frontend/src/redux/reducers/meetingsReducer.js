@@ -1,4 +1,7 @@
-import { FETCH_MEETINGS_REQUESTED, FETCH_MEETINGS_SUCCEEDED } from '../actions';
+import {
+  FETCH_MEETINGS_REQUESTED,
+  FETCH_MEETINGS_SUCCEEDED
+} from '../actions';
 
 const initialState = {
   isFetching: false,

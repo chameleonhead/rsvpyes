@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { fetchMeetings } from '../redux/actions'
+import { fetchMeetings, createMeetingPlan } from '../redux/actions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -11,6 +11,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     fetchMeetings: () => {
       dispatch(fetchMeetings());
+    },
+    createMeetings: ({meetingName, placeId, placeName, beginAt, endAt}) => {
+      dispatch(createMeetingPlan({meetingName, placeId, placeName, beginAt, endAt}))
     }
   };
 }

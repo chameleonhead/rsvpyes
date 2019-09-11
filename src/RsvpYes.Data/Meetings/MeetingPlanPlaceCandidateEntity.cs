@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RsvpYes.Data.Places;
+using System;
 
 namespace RsvpYes.Data.Meetings
 {
@@ -8,5 +9,6 @@ namespace RsvpYes.Data.Meetings
         public int Seq { get; set; }
         public Guid PlaceId { get; set; }
         public string DetailInfo { get; set; }
+        public PlaceEntity Place { get; set; }
     }
 }

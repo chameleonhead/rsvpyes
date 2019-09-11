@@ -8,7 +8,7 @@ namespace RsvpYes.Query
         public string Name { get; set; }
         public Place Place { get; set; }
         public DateTime? BeginAt { get; set; }
-        public DateTime? EndAt { get; set; }
-        public TimeSpan? Duration => BeginAt.HasValue && EndAt.HasValue ? EndAt - BeginAt : default;
+        public TimeSpan? Duration { get; set; }
+        public DateTime? EndAt => BeginAt.HasValue && Duration.HasValue ? BeginAt + Duration : default;
     }
 }

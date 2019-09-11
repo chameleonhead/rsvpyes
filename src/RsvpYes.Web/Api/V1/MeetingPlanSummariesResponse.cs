@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RsvpYes.Web.Api.V1
 {
-    public class MeetingsResponse
+    public class MeetingPlanSummariesResponse
     {
         public List<MeetingPlanSummary> Meetings { get; set; }
     }

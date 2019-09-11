@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.Models;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -10,10 +11,11 @@ using RsvpYes.Data;
 using RsvpYes.Domain.Meetings;
 using RsvpYes.Domain.Places;
 using RsvpYes.Domain.Users;
+using RsvpYes.Query;
 using RsvpYes.Web.Identity;
-using System.Collections.Generic;
+using System;
 
-namespace RsvpYes.Web.Api
+namespace RsvpYes.Web
 {
     public class Startup
     {
@@ -35,6 +37,8 @@ namespace RsvpYes.Web.Api
             services.AddTransient<IPlaceRepository, PlaceRepository>();
             services.AddTransient<IMeetingPlanRepository, MeetingPlanRepository>();
             services.AddTransient<IOrganizationRepository, OrganizationRepository>();
+            services.AddTransient<IMeetingsQuery, MeetingsQuery>();
+            services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>()

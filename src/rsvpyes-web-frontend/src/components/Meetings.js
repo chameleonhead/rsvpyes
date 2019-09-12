@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, CssBaseline, Paper, Typography } from '@material-ui/core';
 import withMeetings from './withMeetings';
+import MeetingPlanCreateDialog from './MeetingPlanCreateDialog';
 
 function Meeting(props) {
   return (
@@ -17,6 +18,7 @@ function Meetings(props) {
       <CssBaseline />
       <Container>
         <h1>会一覧</h1>
+        <MeetingPlanCreateDialog />
         {meetings.map(meeting => <Meeting key={meeting.id} meeting={meeting} />)}
       </Container>
     </React.Fragment>

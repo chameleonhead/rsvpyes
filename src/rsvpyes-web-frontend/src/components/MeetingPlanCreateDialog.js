@@ -20,6 +20,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import { startOfHour, addHours, compareAsc } from 'date-fns';
 import jaLocale from 'date-fns/locale/ja';
+import withMeetings from './withMeetings';
 
 class MeetingPlanCreateDialog extends React.Component {
   constructor(props) {
@@ -35,6 +36,18 @@ class MeetingPlanCreateDialog extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const date = new Date();
+    this.setState({
+      meetingName: '',
+      placeName: '',
+      scheduleSpecified: false,
+      beginAt: addHours(startOfHour(date), 1),
+      endAt: addHours(startOfHour(date), 3),
+      open: false
+    });
+  }
+
   handleOpen() {
     this.setState({ ...this.state, open: true });
   }
@@ -44,7 +57,13 @@ class MeetingPlanCreateDialog extends React.Component {
   }
 
   handleSubmit() {
-    this.setState({ ...this.state, open: false });
+    const { meetingName, placeName, scheduleSpecified, beginAt, endAt } = this.state;
+    this.props.createMeetingPlan({
+      meetingName,
+      placeName,
+      beginAt: scheduleSpecified ? beginAt : '',
+      endAt: scheduleSpecified ? endAt : ''
+    }, () => this.setState({ ...this.state, open: false }));
   }
 
   handleMeetingNameChange(e) {
@@ -81,43 +100,43 @@ class MeetingPlanCreateDialog extends React.Component {
     return (
       <React.Fragment>
         <Button onClick={this.handleOpen.bind(this)}>会を作成</Button>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose.bind(this)}
-          aria-labelledby="form-dialog-title"
-          scroll="body"
-          fullWidth
-          maxWidth='sm'>
-          <DialogTitle id="alert-dialog-title">会予定を作成</DialogTitle>
-          <DialogContent dividers={false}>
-            <List>
-              <ListItem>
-                <TextField
-                  type="text"
-                  margin="none"
-                  fullWidth
-                  label="会の名前"
-                  value={this.state.meetingName}
-                  onChange={this.handleMeetingNameChange.bind(this)} />
-              </ListItem>
-              <ListItem>
-                <TextField
-                  type="text"
-                  margin="none"
-                  fullWidth
-                  label="場所"
-                  value={this.state.placeName}
-                  onChange={this.handlePlaceNameChange.bind(this)} />
-              </ListItem>
-              <ListItem>
-                <FormControlLabel
-                  label="予定日入力"
-                  control={
-                    <Switch
-                      value={this.state.scheduleSpecified}
-                      onChange={this.handleScheduleSpecifiedChange.bind(this)} />} />
-              </ListItem>
-              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+          <Dialog
+            open={this.state.open}
+            onClose={this.handleClose.bind(this)}
+            aria-labelledby="form-dialog-title"
+            scroll="body"
+            fullWidth
+            maxWidth='sm'>
+            <DialogTitle id="alert-dialog-title">会予定を作成</DialogTitle>
+            <DialogContent dividers={false}>
+              <List>
+                <ListItem>
+                  <TextField
+                    type="text"
+                    margin="none"
+                    fullWidth
+                    label="会の名前"
+                    value={this.state.meetingName}
+                    onChange={this.handleMeetingNameChange.bind(this)} />
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    type="text"
+                    margin="none"
+                    fullWidth
+                    label="場所"
+                    value={this.state.placeName}
+                    onChange={this.handlePlaceNameChange.bind(this)} />
+                </ListItem>
+                <ListItem>
+                  <FormControlLabel
+                    label="予定日入力"
+                    control={
+                      <Switch
+                        value={this.state.scheduleSpecified}
+                        onChange={this.handleScheduleSpecifiedChange.bind(this)} />} />
+                </ListItem>
                 <ListItem>
                   <Grid container spacing={1}>
                     <Grid item xs={6}>
@@ -170,21 +189,21 @@ class MeetingPlanCreateDialog extends React.Component {
                     </Grid>
                   </Grid>
                 </ListItem>
-              </MuiPickersUtilsProvider>
-            </List>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose.bind(this)} color="primary">
-              キャンセル
+              </List>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose.bind(this)} color="primary">
+                キャンセル
             </Button>
-            <Button onClick={this.handleSubmit.bind(this)} color="primary" autoFocus>
-              登録
+              <Button onClick={this.handleSubmit.bind(this)} color="primary" autoFocus>
+                登録
             </Button>
-          </DialogActions>
-        </Dialog>
+            </DialogActions>
+          </Dialog>
+        </MuiPickersUtilsProvider>
       </React.Fragment >
     );
   }
 }
 
-export default MeetingPlanCreateDialog;
+export default withMeetings(MeetingPlanCreateDialog);

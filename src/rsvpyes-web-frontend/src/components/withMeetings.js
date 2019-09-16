@@ -12,8 +12,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     fetchMeetings: () => {
       dispatch(fetchMeetings());
     },
-    createMeetings: ({meetingName, placeId, placeName, beginAt, endAt}) => {
-      dispatch(createMeetingPlan({meetingName, placeId, placeName, beginAt, endAt}))
+    createMeetingPlan: ({meetingName, placeName, beginAt, endAt}, cb) => {
+      dispatch(createMeetingPlan({meetingName, placeName, beginAt, endAt}, cb))
     }
   };
 }

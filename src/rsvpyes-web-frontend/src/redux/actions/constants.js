@@ -1,2 +1,2 @@
-export const LOGIN_URL = 'http://localhost:51254/connect/token';
-export const MEETING_PLANS_URL = 'http://localhost:51254/api/v1/meetingplans';
+export const LOGIN_URL = 'https://localhost:44374/connect/token';
+export const MEETING_PLANS_URL = 'https://localhost:44374/api/v1/meetingplans';

@@ -58,9 +58,14 @@ export function receiveMeetings(meetings) {
 }
 
 export function fetchMeetings() {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(requestMeetings());
-    return fetch(MEETING_PLANS_URL)
+    const method = "GET";
+    const headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + getState().auth.accessToken
+    };
+    return fetch(MEETING_PLANS_URL, { method, headers, mode: 'cors' })
       .then(response => response.json())
       .then(json => dispatch(receiveMeetings(json.meetings)))
       .catch(console.error);
@@ -78,22 +83,25 @@ export function meetingCreationSuccess() {
   return { type: CREATE_MEETING_PLAN_SUCCEEDED };
 }
 
-export function createMeetingPlan({meetingName, placeId, placeName, beginAt, endAt}) {
-  return dispatch => {
+export function createMeetingPlan({ meetingName, placeName, beginAt, endAt }, cb) {
+  return (dispatch, getState) => {
     dispatch(requestMeetingCreation());
     const method = "POST";
     const body = new URLSearchParams();
     body.set('meetingName', meetingName);
-    body.set('placeId', placeId);
     body.set('placeName', placeName);
     body.set('beginAt', beginAt);
     body.set('endAt', endAt);
     const headers = {
       'Accept': 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + getState().auth.accessToken
     };
-    return fetch(MEETING_PLANS_URL, { method, headers, body })
+    return fetch(MEETING_PLANS_URL, { method, headers, body, mode: 'cors' })
       .then(response => response.json())
-      .then(json => dispatch(meetingCreationSuccess(json.access_token)));
+      .then(json => {
+        dispatch(meetingCreationSuccess(json.access_token));
+        cb();
+      });
   }
 }

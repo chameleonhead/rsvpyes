@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -89,6 +90,11 @@ namespace RsvpYes.Web
             {
                 c.SwaggerDoc("v1", new Info { Title = "RsvpYes API", Version = "v1" });
             });
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "../rsvpyes-web-frontend/build";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -104,11 +110,22 @@ namespace RsvpYes.Web
 
             app.UseHttpsRedirection();
             app.UseCors();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "../rsvpyes-web-frontend";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
         }
     }
 }

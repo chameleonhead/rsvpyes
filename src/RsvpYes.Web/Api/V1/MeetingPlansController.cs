@@ -11,7 +11,7 @@ namespace RsvpYes.Web.Api.V1
 {
     [Route("api/v1/meetingplans")]
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [EnableCors]
     public class MeetingsController : ControllerBase
     {

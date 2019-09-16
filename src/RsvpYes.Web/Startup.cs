@@ -16,8 +16,10 @@ using RsvpYes.Domain.Places;
 using RsvpYes.Domain.Users;
 using RsvpYes.Query;
 using RsvpYes.Web.Identity;
+using RsvpYes.Web.Swashbuckle;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 
 namespace RsvpYes.Web
 {
@@ -89,6 +91,18 @@ namespace RsvpYes.Web
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "RsvpYes API", Version = "v1" });
+                c.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "password",
+                    TokenUrl = "/connect/token",
+                    Scopes = new Dictionary<string, string>
+                    {
+                        { "rsvpyes", "RsvpYes API V1" },
+                    }
+                });
+                c.EnableAnnotations();
+                c.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
             services.AddSpaStaticFiles(configuration =>
@@ -117,6 +131,12 @@ namespace RsvpYes.Web
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rsvpyes API V1");
+                c.OAuthClientId("rsvpyes.client");
+                c.OAuthClientSecret("secret");
+            });
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "../rsvpyes-web-frontend";

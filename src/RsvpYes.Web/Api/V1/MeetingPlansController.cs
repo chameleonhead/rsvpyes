@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RsvpYes.Application.Meetings;
 using RsvpYes.Query;
@@ -9,6 +11,8 @@ namespace RsvpYes.Web.Api.V1
 {
     [Route("api/v1/meetingplans")]
     [ApiController]
+    [Authorize]
+    [EnableCors]
     public class MeetingsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -21,6 +25,7 @@ namespace RsvpYes.Web.Api.V1
         }
 
         [HttpGet]
+        [Produces("application/json", Type = typeof(MeetingPlanSummariesResponse))]
         public async Task<ActionResult<MeetingPlanSummariesResponse>> Get()
         {
             var plans = await _query.FetchMeetingPlansAsync().ConfigureAwait(false);
@@ -28,8 +33,10 @@ namespace RsvpYes.Web.Api.V1
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(MeetingPlanCreateCommand command)
+        [Consumes("application/x-www-form-urlencoded")]
+        public async Task<ActionResult> Post([FromForm] MeetingPlanCreateRequest request)
         {
+            var command = new MeetingPlanCreateCommand(request.MeetingName, new Domain.Users.UserId());
             var id = await _mediator.Send(command).ConfigureAwait(false);
             return Created($"/api/v1/meetingplans/{id}", null);
         }

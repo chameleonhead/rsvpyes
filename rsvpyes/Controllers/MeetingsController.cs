@@ -82,7 +82,11 @@ namespace rsvpyes.Controllers
         // GET: Meetings/Create
         public IActionResult Create()
         {
-            return View();
+            var meeting = new Meeting()
+            {
+                StartTime = DateTime.UtcNow.AddHours(9).Date.AddHours(DateTime.UtcNow.AddHours(9).Hour)
+            };
+            return View(meeting);
         }
 
         // POST: Meetings/Create

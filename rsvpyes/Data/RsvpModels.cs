@@ -16,7 +16,7 @@ namespace rsvpyes.Data
         public Guid Id { get; set; }
         public string Name { get; set; }
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public DateTime StartTime { get; set; }
         public string PlaceName { get; set; }
         public string PlaceUri { get; set; }

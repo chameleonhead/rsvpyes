@@ -1,5 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Thank you!";
+    var id = (Guid)ViewData["id"];
 }
 <p></p>
 <p style="font-size: 200%">回答ありがとうございます。</p>
+
+<hr />
+<div><a asp-action="ResponsesForOthers" asp-route-id="@id">会の詳細</a></div>

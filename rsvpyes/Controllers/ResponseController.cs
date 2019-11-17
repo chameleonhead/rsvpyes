@@ -111,7 +111,7 @@ namespace rsvpyes.Controllers
                 Rsvp = Rsvp.Yes,
                 Timestamp = DateTime.Now,
             });
-            return RedirectToAction(nameof(ThankYou));
+            return RedirectToAction(nameof(ThankYou), new { id });
         }
 
         [HttpPost]
@@ -124,11 +124,13 @@ namespace rsvpyes.Controllers
                 Reason = reason,
                 Timestamp = DateTime.Now,
             });
-            return RedirectToAction(nameof(ThankYou));
+            return RedirectToAction(nameof(ThankYou), new { id });
         }
 
-        public IActionResult ThankYou()
+        [HttpGet]
+        public IActionResult ThankYou(Guid id)
         {
+            ViewData["Id"] = id;
             return View();
         }
     }

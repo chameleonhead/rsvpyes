@@ -51,6 +51,11 @@
 <div>
     <h4>参加者一覧</h4>
     <hr />
+    <div class="text-right">
+        参加: @(Model.ResponseStatus.Where(d => d.RsvpResponse.Rsvp == rsvpyes.Data.Rsvp.Yes).Count()) 人 /
+        不参加: @(Model.ResponseStatus.Where(d => d.RsvpResponse.Rsvp == rsvpyes.Data.Rsvp.No).Count()) 人 /
+        未回答: @(Model.ResponseStatus.Where(d => d.RsvpResponse.Rsvp == rsvpyes.Data.Rsvp.NotRespond).Count()) 人
+    </div>
     <table class="table table-striped">
         <tr>
             <th>名前</th>
